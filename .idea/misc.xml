@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/about.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/activity_lists.xml" value="0.26145833333333335" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/activity_main.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/activity_notes.xml" value="0.26145833333333335" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/activity_registration.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/choose_image_dialog.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/edit_text_dialog.xml" value="0.1" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/footer.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/login_dialog.xml" value="0.27447916666666666" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/on_add_list_click_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/on_ass_list_click_dialog.xml" value="0.12708333333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/on_edit_text_click_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/on_note_click_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/register_dialog.xml" value="0.25317028985507245" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/register_fragment.xml" value="0.25317028985507245" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/row_list_item.xml" value="0.2755208333333333" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/row_note_item.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/sign_up_dialog.xml" value="0.165" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/menu/menu.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/menu/search_menu.xml" value="0.2755208333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

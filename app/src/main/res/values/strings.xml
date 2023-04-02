@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">MyNotesApp</string>
+    <string name="list_name">List Name</string>
+    <string name="description">Description</string>
+    <string name="footer_text">NotesApp | notesapp@gmail.com</string>
+    <string name="notes_logo">Notes logo</string>
+    <string name="search_image">search image</string>
+    <string name="edit_image">edit image</string>
+    <string name="garbage_image">garbage image</string>
+    <string name="note_name">Note name</string>
+    <string name="add">Add</string>
+    <string name="name">Name</string>
+    <string name="hello">Hello</string>
+    <string name="username">username</string>
+    <string name="plus_icon">plus icon</string>
+    <string name="profile_icon">profile icon</string>
+    <string name="about_paragraph">NotesApp was created with the thought of a generic lists App, whether it is a to-do list, a wish list, or a shopping list, the app will meet your need for convenient use with notes within each list.\n Have a question or a feedback?\n We would love to here it!\n Contact us via email:\n notesapp@gmail.com</string>
+    <string name="note_description">note description</string>
+    <string name="save_changes">Save changes</string>
+    <string name="cancel_changes">Cancel changes</string>
+    <string name="take_a_photo">Take a photo</string>
+    <string name="choose_from_gallery">Choose from gallery</string>
+    <string name="delete_photo">Delete photo</string>
+    <string name="notes_app"><u>NotesApp</u></string>
+    <string name="already_have_an_account">Already have an account?</string>
+    <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
+    <string name="register">Register</string>
+    <string name="registration">Registration</string>
+    <string name="enter_email_address">Enter email address</string>
+    <string name="enter_password">Enter password</string>
+    <string name="login">login</string>
+    <string name="enter_full_name">Enter full name</string>
+    <string name="re_enter_password">Re-enter password</string>
+    <string name="search">Search</string>
+    <string name="logout">- Logout -</string>
+    <string name="about_us">- About Us -</string>
+    <string name="contact_us">- Contact Us -</string>
+    <string name="delete_my_account">- Delete My Account -</string>
+
+</resources>

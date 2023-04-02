@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="50dp"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:background="@color/light_blue_bg"
+    android:id="@+id/LL_login_dialog">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ET_email_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_email_address"
+        android:layout_marginBottom="10dp"
+        android:gravity="center"
+        android:inputType="textEmailAddress"
+        android:textStyle="italic"/>
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ET_password_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/enter_password"
+        android:gravity="center"
+        android:layout_marginBottom="100dp"
+        android:inputType="textPassword"
+        android:textStyle="italic"/>
+
+    <Button
+        android:id="@+id/B_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"/>
+
+</LinearLayout>
