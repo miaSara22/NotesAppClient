@@ -13,7 +13,7 @@ class MyServer @Inject constructor(
     @ApplicationContext val context: Context): IServerManager {
 
     //retrofit
-    private val authToken = SharedPref.getInstance(context).getUserToken()
+    private val authToken = "hjsdglfIUJKSWEDbgvgfslwjedhnuvgkilydrebgl"
     private val api = IRetrofitApi.create(authToken)
 
     //localdb

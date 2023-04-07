@@ -47,7 +47,7 @@ interface IRetrofitApi {
     @POST("/login-user")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @POST("/save-user")
+    @POST("/save-new-user")
     fun saveUser(@Body user: User): Call<User>
 
     @POST("/delete-user/{userId}")

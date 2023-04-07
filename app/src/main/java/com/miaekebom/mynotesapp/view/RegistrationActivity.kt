@@ -75,16 +75,13 @@ class RegistrationActivity : AppCompatActivity() {
                         response.body().let {
                             it?.let {
                                 val loginResponse = response.body()
-                                if (loginResponse != null && loginResponse.success) {
+                                if (loginResponse != null && response.isSuccessful) {
                                     val jwtToken = loginResponse.token
-                                    println("Hi im tokennn" + jwtToken.toString())
+                                    println("Hi im tokennn" + jwtToken)
                                     SharedPref.getInstance(this@RegistrationActivity).setUserToken(jwtToken.toString())
                                     displayListsActivity("")
                                 } else {
-                                    val errorMessage = loginResponse?.message ?: "Unknown error"
-                                    displayToast(errorMessage)
-                                }
-                            }
+                                    displayToast("Login failed. Please try again later")} }
                         }
                     }
                     override fun onFailure(call: Call<LoginResponse>, t: Throwable) { error(t) } })
@@ -105,16 +102,22 @@ class RegistrationActivity : AppCompatActivity() {
             val registerB = view.B_register
 
             registerB.setOnClickListener {
+
                 val user = User(2,email.toString() ,fullName.toString())
 
-                registrationViewModel.viewModelScope.launch(Dispatchers.IO) {
-                    registrationViewModel.addNewUser(user).enqueue(object : Callback<User> {
-                        override fun onResponse(call: Call<User>, response: Response<User>) {
-                            if (response.isSuccessful)
-                                displayListsActivity(fullName.toString())
-                        }
-                        override fun onFailure(call: Call<User>, t: Throwable) { error(t) }
-                    })
+                if (pass1 == pass2) {
+
+                    registrationViewModel.viewModelScope.launch(Dispatchers.IO) {
+                        registrationViewModel.addNewUser(user).enqueue(object : Callback<User> {
+                            override fun onResponse(call: Call<User>, response: Response<User>) {
+                                if (response.isSuccessful)
+                                    displayListsActivity(fullName.toString())
+                                else {
+                                    displayToast("Registration failed. Please try again later")
+                                }
+                            }
+                            override fun onFailure(call: Call<User>, t: Throwable) { error(t) }})
+                    }
                 }
             }
         }
