@@ -12,7 +12,7 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
 
-    suspend fun addNewUser(user: User): Call<User> {
+    fun addNewUser(user: User): Call<String> {
         return repository.addNewUser(user)
     }
 

@@ -4,6 +4,7 @@ import androidx.room.TypeConverter
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.miaekebom.mynotesapp.model.data.List
+import com.miaekebom.mynotesapp.model.data.LoginResponse
 import com.miaekebom.mynotesapp.model.data.Note
 
 class Converter {

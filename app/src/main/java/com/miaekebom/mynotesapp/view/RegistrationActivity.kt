@@ -100,25 +100,17 @@ class RegistrationActivity : AppCompatActivity() {
             val pass1 = view.ET_password_register1.text
             val pass2 = view.ET_password_register2.text
             val registerB = view.B_register
+            val user = User(2,email.toString() ,fullName.toString())
 
             registerB.setOnClickListener {
 
-                val user = User(2,email.toString() ,fullName.toString())
-
-                if (pass1 == pass2) {
-
-                    registrationViewModel.viewModelScope.launch(Dispatchers.IO) {
-                        registrationViewModel.addNewUser(user).enqueue(object : Callback<User> {
-                            override fun onResponse(call: Call<User>, response: Response<User>) {
-                                if (response.isSuccessful)
-                                    displayListsActivity(fullName.toString())
-                                else {
-                                    displayToast("Registration failed. Please try again later")
-                                }
-                            }
-                            override fun onFailure(call: Call<User>, t: Throwable) { error(t) }})
-                    }
-                }
+                    registrationViewModel.addNewUser(user).enqueue(object : Callback<String> {
+                        override fun onResponse(
+                            call: Call<String>,
+                            response: Response<String>) {
+                            displayListsActivity(fullName.toString())
+                        }
+                        override fun onFailure(call: Call<String>, t: Throwable) { error(t) } })
             }
         }
     }

@@ -12,7 +12,7 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override suspend fun addNewUser(user: User): Call<User> {
+    override fun addNewUser(user: User): Call<String> {
         return serverManager.addNewUser(user)
     }
 

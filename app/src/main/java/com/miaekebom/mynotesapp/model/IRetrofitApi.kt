@@ -33,7 +33,8 @@ interface IRetrofitApi {
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
-            .baseUrl("http://192.168.1.103:8081")
+            .baseUrl("http://192.168.1.100:8081")
+            //.baseUrl("http://192.168.1.103:8081")
             .build()
 
         return retrofit.create(IRetrofitApi::class.java)
@@ -48,7 +49,7 @@ interface IRetrofitApi {
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @POST("/save-new-user")
-    fun saveUser(@Body user: User): Call<User>
+    fun saveUser(@Body user: User): Call<String>
 
     @POST("/delete-user/{userId}")
     fun deleteUser(@Body userId: Int): Call<User>
