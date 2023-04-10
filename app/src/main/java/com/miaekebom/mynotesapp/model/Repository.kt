@@ -4,6 +4,7 @@ import android.content.Context
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.RequestBody
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -12,8 +13,8 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override fun addNewUser(user: User): Call<RegisterResponse> {
-        return serverManager.addNewUser(user)
+    override fun addNewUser(requestBody: RequestBody): Call<RegisterResponse> {
+        return serverManager.addNewUser(requestBody)
     }
 
     override fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {

@@ -3,12 +3,13 @@ package com.miaekebom.mynotesapp.model
 import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
+import okhttp3.RequestBody
 import retrofit2.Call
 
 interface IRepository {
 
     // *** User ***
-    fun addNewUser(user: User): Call<RegisterResponse>
+    fun addNewUser(requestBody: RequestBody): Call<RegisterResponse>
     fun loginUser(loginRequest: LoginRequest): Call<LoginResponse>
     fun deleteUser(userId: String)
 

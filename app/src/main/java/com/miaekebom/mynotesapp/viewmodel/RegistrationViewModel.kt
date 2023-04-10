@@ -7,14 +7,15 @@ import com.miaekebom.mynotesapp.model.data.LoginResponse
 import com.miaekebom.mynotesapp.model.data.RegisterResponse
 import com.miaekebom.mynotesapp.model.data.User
 import dagger.hilt.android.lifecycle.HiltViewModel
+import okhttp3.RequestBody
 import retrofit2.Call
 import javax.inject.Inject
 
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
 
-    fun addNewUser(user: User): Call<RegisterResponse> {
-        return repository.addNewUser(user)
+    fun addNewUser(requestBody: RequestBody): Call<RegisterResponse> {
+        return repository.addNewUser(requestBody)
     }
 
     fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {

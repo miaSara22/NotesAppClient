@@ -30,7 +30,6 @@ class SharedPref private constructor(context: Context) {
 
     fun setUser(user: User) {
         sharePref.edit()
-            .putInt(id, user.userId)
             .putString(fullName, user.fullName)
             .putString(email, user.email)
             .apply()
@@ -40,7 +39,7 @@ class SharedPref private constructor(context: Context) {
         val id = sharePref.getInt(id, 0)
         val email = sharePref.getString(email, "")
         val fullName = sharePref.getString(fullName, "")
-        return User(id, email.toString(), fullName.toString())
+        return User( 2,email.toString(), fullName.toString(), "", "")
     }
 
     fun setUserToken(jwtToken: String){

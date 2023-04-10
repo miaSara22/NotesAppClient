@@ -9,7 +9,7 @@
     android:background="@color/light_blue_bg"
     android:id="@+id/LL_register_dialog">
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/ET_email_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -19,7 +19,7 @@
         android:inputType="textEmailAddress"
         android:textStyle="italic" />
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/ET_user_name_register"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -29,7 +29,7 @@
         android:inputType="text"
         android:textStyle="italic"/>
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/ET_password_register1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -39,7 +39,7 @@
         android:inputType="textPassword"
         android:textStyle="italic"/>
 
-    <com.google.android.material.textfield.TextInputEditText
+    <EditText
         android:id="@+id/ET_password_register2"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

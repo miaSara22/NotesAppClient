@@ -5,6 +5,7 @@ import com.miaekebom.mynotesapp.model.data.LoginResponse
 import com.miaekebom.mynotesapp.model.data.RegisterResponse
 import com.miaekebom.mynotesapp.model.data.User
 import okhttp3.OkHttpClient
+import okhttp3.RequestBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -19,23 +20,27 @@ interface IRetrofitApi {
     companion object {
 
         fun create(authToken: String): IRetrofitApi {
-        val httpClient = OkHttpClient
-            .Builder()
-            .addInterceptor { chain ->
-                val request = chain.request().newBuilder()
-                    .addHeader("Authorization", "Bearer $authToken")
-                    .build()
-                chain.proceed(request)}
-            .addInterceptor(HttpLoggingInterceptor().apply {
-                level = HttpLoggingInterceptor.Level.BODY })
-            .build()
+            val loggingInterceptor = HttpLoggingInterceptor().apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
 
-        val retrofit = Retrofit
+            val httpClient = OkHttpClient.Builder()
+                .addInterceptor(loggingInterceptor)
+                .addInterceptor { chain ->
+                    val request = chain.request().newBuilder()
+                        .addHeader("Authorization", "Bearer $authToken")
+                        .build()
+                    chain.proceed(request)
+                }
+                .build()
+
+
+            val retrofit = Retrofit
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
-            //.baseUrl("http://192.168.1.100:8081")
-            .baseUrl("http://192.168.1.103:8085")
+            .baseUrl("http://192.168.1.100:8085")
+            //.baseUrl("http://192.168.1.103:8085")
             .build()
 
         return retrofit.create(IRetrofitApi::class.java)
@@ -49,8 +54,8 @@ interface IRetrofitApi {
     @POST("/login-user")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @POST("/save-new-user")
-    fun saveUser(@Body user: User): Call<RegisterResponse>
+    @POST("/save-user")
+    fun saveUser(@Body requestBody: RequestBody): Call<RegisterResponse>
 
     @POST("/delete-user/{userId}")
     fun deleteUser(@Body userId: Int): Call<User>

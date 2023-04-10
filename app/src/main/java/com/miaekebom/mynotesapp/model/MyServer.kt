@@ -6,6 +6,7 @@ import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.localdb.RoomDB
 import com.miaekebom.mynotesapp.model.utils.SharedPref
 import dagger.hilt.android.qualifiers.ApplicationContext
+import okhttp3.RequestBody
 import retrofit2.*
 import javax.inject.Inject
 
@@ -22,8 +23,8 @@ class MyServer @Inject constructor(
 
 
 
-    override fun addNewUser(user: User): Call<RegisterResponse> {
-        return api.saveUser(user)
+    override fun addNewUser(requestBody: RequestBody): Call<RegisterResponse> {
+        return api.saveUser(requestBody)
     }
 
     override fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
