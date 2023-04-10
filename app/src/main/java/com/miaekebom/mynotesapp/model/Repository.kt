@@ -12,7 +12,7 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override fun addNewUser(user: User): Call<String> {
+    override fun addNewUser(user: User): Call<RegisterResponse> {
         return serverManager.addNewUser(user)
     }
 

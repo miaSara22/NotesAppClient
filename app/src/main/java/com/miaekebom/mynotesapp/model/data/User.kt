@@ -11,4 +11,4 @@ data class User(
     val email: String,
     val fullName: String,
 
-){ constructor(): this(0,"","") }
+)

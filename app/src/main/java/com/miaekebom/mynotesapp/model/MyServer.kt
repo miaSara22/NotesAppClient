@@ -22,7 +22,7 @@ class MyServer @Inject constructor(
 
 
 
-    override fun addNewUser(user: User): Call<String> {
+    override fun addNewUser(user: User): Call<RegisterResponse> {
         return api.saveUser(user)
     }
 

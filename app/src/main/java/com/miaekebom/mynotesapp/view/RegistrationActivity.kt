@@ -7,11 +7,12 @@ import android.widget.Button
 import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
-import androidx.lifecycle.viewModelScope
 import com.google.android.material.textfield.TextInputEditText
+import com.google.gson.Gson
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.model.data.LoginRequest
 import com.miaekebom.mynotesapp.model.data.LoginResponse
+import com.miaekebom.mynotesapp.model.data.RegisterResponse
 import com.miaekebom.mynotesapp.model.data.User
 import com.miaekebom.mynotesapp.model.utils.SharedPref
 import com.miaekebom.mynotesapp.viewmodel.RegistrationViewModel
@@ -21,8 +22,6 @@ import kotlinx.android.synthetic.main.login_dialog.*
 import kotlinx.android.synthetic.main.login_dialog.view.*
 import kotlinx.android.synthetic.main.register_dialog.*
 import kotlinx.android.synthetic.main.register_dialog.view.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -65,26 +64,30 @@ class RegistrationActivity : AppCompatActivity() {
             val email = view.ET_email_login.text
             val pwd = view.ET_password_login.text
             val loginB = view.B_login
+            val loginRequest = LoginRequest(email.toString(), pwd.toString())
 
             loginB.setOnClickListener {
+                if (!email.isNullOrEmpty() && !pwd.isNullOrEmpty()) {
 
-                val loginRequest = LoginRequest(email.toString(), pwd.toString())
-                registrationViewModel.loginUser(loginRequest).enqueue(object: Callback<LoginResponse>{
-                    override fun onResponse(
-                        call: Call<LoginResponse>, response: Response<LoginResponse>) {
-                        response.body().let {
-                            it?.let {
-                                val loginResponse = response.body()
-                                if (loginResponse != null && response.isSuccessful) {
-                                    val jwtToken = loginResponse.token
-                                    println("Hi im tokennn" + jwtToken)
-                                    SharedPref.getInstance(this@RegistrationActivity).setUserToken(jwtToken.toString())
-                                    displayListsActivity("")
-                                } else {
-                                    displayToast("Login failed. Please try again later")} }
+                    val call = registrationViewModel.loginUser(loginRequest)
+                    call.enqueue(object: Callback<LoginResponse>{
+                        override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
+                            if (response.isSuccessful) {
+                                val message = response.body()
+                                message?.let {
+                                    val jwtToken = message.token
+                                    val userEmail = message.email
+                                    val userFullName = message.fullName
+
+                                    SharedPref.getInstance(this@RegistrationActivity).setUserToken(jwtToken)
+                                    displayListsActivity(userFullName)
+                                }
+                            } else {
+                                displayToast("Login failed. Please try again later.")}
                         }
-                    }
-                    override fun onFailure(call: Call<LoginResponse>, t: Throwable) { error(t) } })
+                        override fun onFailure(call: Call<LoginResponse>, t: Throwable) { error(t) } })
+
+                } else { displayToast("Fields must not be empty.")}
             }
         }
     }
@@ -104,13 +107,29 @@ class RegistrationActivity : AppCompatActivity() {
 
             registerB.setOnClickListener {
 
-                    registrationViewModel.addNewUser(user).enqueue(object : Callback<String> {
-                        override fun onResponse(
-                            call: Call<String>,
-                            response: Response<String>) {
-                            displayListsActivity(fullName.toString())
-                        }
-                        override fun onFailure(call: Call<String>, t: Throwable) { error(t) } })
+                if (!email.isNullOrEmpty() && !fullName.isNullOrEmpty() && !pass1.isNullOrEmpty()/* &&pass1 == pass2*/){
+
+                        registrationViewModel.addNewUser(user).enqueue(object : Callback<RegisterResponse> {
+                            override fun onResponse(
+                                call: Call<RegisterResponse>, response: Response<RegisterResponse>) {
+                                if (response.isSuccessful) {
+                                    val responseBody = response.body()
+                                    if (responseBody != null) {
+                                        println("i'm not null")
+                                        val gson = Gson()
+                                        val registerResponse = gson.fromJson(responseBody.message, RegisterResponse::class.java)
+                                        if (registerResponse.success) {
+                                            displayToast("You Registered Successfully! please login.")
+                                        } else {
+                                            displayToast(registerResponse.message ?: "Registration failed. please try again later.")
+                                        }
+                                    } else {
+                                        displayToast("Registration failed. please try again later.") }
+                                }
+                            }
+                            override fun onFailure(call: Call<RegisterResponse>, t: Throwable) { error(t) } })
+
+                } else { displayToast("All fields must not be empty. Passwords must match.")}
             }
         }
     }

@@ -2,6 +2,7 @@ package com.miaekebom.mynotesapp.model
 
 import com.miaekebom.mynotesapp.model.data.LoginRequest
 import com.miaekebom.mynotesapp.model.data.LoginResponse
+import com.miaekebom.mynotesapp.model.data.RegisterResponse
 import com.miaekebom.mynotesapp.model.data.User
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -33,8 +34,8 @@ interface IRetrofitApi {
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
-            .baseUrl("http://192.168.1.100:8081")
-            //.baseUrl("http://192.168.1.103:8081")
+            //.baseUrl("http://192.168.1.100:8081")
+            .baseUrl("http://192.168.1.103:8085")
             .build()
 
         return retrofit.create(IRetrofitApi::class.java)
@@ -49,7 +50,7 @@ interface IRetrofitApi {
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @POST("/save-new-user")
-    fun saveUser(@Body user: User): Call<String>
+    fun saveUser(@Body user: User): Call<RegisterResponse>
 
     @POST("/delete-user/{userId}")
     fun deleteUser(@Body userId: Int): Call<User>

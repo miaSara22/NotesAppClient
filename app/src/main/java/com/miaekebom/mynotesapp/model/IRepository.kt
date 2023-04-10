@@ -8,7 +8,7 @@ import retrofit2.Call
 interface IRepository {
 
     // *** User ***
-    fun addNewUser(user: User): Call<String>
+    fun addNewUser(user: User): Call<RegisterResponse>
     fun loginUser(loginRequest: LoginRequest): Call<LoginResponse>
     fun deleteUser(userId: String)
 
