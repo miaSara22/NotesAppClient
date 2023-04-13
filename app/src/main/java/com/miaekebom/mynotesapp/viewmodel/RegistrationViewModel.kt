@@ -14,15 +14,15 @@ import javax.inject.Inject
 @HiltViewModel
 class RegistrationViewModel @Inject constructor(private val repository: IRepository) : ViewModel() {
 
-    fun addNewUser(requestBody: RequestBody): Call<RegisterResponse> {
-        return repository.addNewUser(requestBody)
+    fun addNewUser(user: User): Call<RegisterResponse> {
+        return repository.addNewUser(user)
     }
 
-    fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
+    suspend fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
         return repository.loginUser(loginRequest)
     }
 
-    fun deleteUser(userId: String){
-        repository.deleteUser(userId)
+    fun deleteUser(userId: Int): Call<Unit>{
+        return repository.deleteUser(userId)
     }
 }

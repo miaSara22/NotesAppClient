@@ -1,3 +1,10 @@
 package com.miaekebom.mynotesapp.model.data
 
-data class LoginRequest(private val email: String, private val pwd: String)
+import com.google.gson.annotations.SerializedName
+
+data class LoginRequest(
+    @SerializedName("email")
+    private val email: String,
+    @SerializedName("pwd")
+    private val pwd: String)
+{constructor():this ("","")}

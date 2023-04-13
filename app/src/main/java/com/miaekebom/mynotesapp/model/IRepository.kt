@@ -1,6 +1,5 @@
 package com.miaekebom.mynotesapp.model
 
-import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import okhttp3.RequestBody
@@ -8,18 +7,17 @@ import retrofit2.Call
 
 interface IRepository {
 
-    // *** User ***
-    fun addNewUser(requestBody: RequestBody): Call<RegisterResponse>
-    fun loginUser(loginRequest: LoginRequest): Call<LoginResponse>
-    fun deleteUser(userId: String)
+    fun addNewUser(user: User): Call<RegisterResponse>
+    suspend fun loginUser(loginRequest: LoginRequest): Call<LoginResponse>
+    fun setUserImage(userId: Int, image: String): Call<Unit>
+    fun deleteUserImage(userId: Int): Call<Unit>
+    fun deleteUser(userId: Int): Call<Unit>
 
-    // *** Note ***
-    fun addNote(listId: String, note: Note)
-    fun deleteNote(listId: String, noteId: String)
-    fun updateNote(listId: String, noteId: String)
-    fun getAllNotes(listId: String): kotlin.collections.List<Note>?
+    fun addNote(listId: Int, note: Note)
+    fun deleteNote(listId: Int, noteId: Int)
+    fun updateNote(listId: Int, noteId: Int)
+    fun getAllNotes(listId: Int): kotlin.collections.List<Note>?
 
-    // *** List ***
     fun addList(ownerId: Int, list: List): Call<Unit>
     fun deleteList(listId: Int): Call<Unit>
     fun updateList(listId: Int, list: List): Call<Unit>

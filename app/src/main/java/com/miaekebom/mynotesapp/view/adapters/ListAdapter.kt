@@ -40,7 +40,7 @@ class ListAdapter(private var dataList: MutableList<com.miaekebom.mynotesapp.mod
 
         val list = dataList[position]
 
-        holder.listTitle.text = list.listName
+        holder.listTitle.text = list.title
         holder.listTitle.setOnClickListener {
             onListTitleClick.invoke(list)
         }

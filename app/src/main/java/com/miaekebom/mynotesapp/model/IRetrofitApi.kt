@@ -10,10 +10,7 @@ import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
 
 interface IRetrofitApi {
 
@@ -39,8 +36,7 @@ interface IRetrofitApi {
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient)
-            .baseUrl("http://192.168.1.100:8085")
-            //.baseUrl("http://192.168.1.103:8085")
+            .baseUrl("http://192.168.1.103:9000")
             .build()
 
         return retrofit.create(IRetrofitApi::class.java)
@@ -48,29 +44,37 @@ interface IRetrofitApi {
 }
 
     //user
-    @GET("/get-all-users")
+    @GET("/getAllUsers")
     fun getAllUsers(): Call<List<User>>
 
-    @POST("/login-user")
+    @POST("/loginUser")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
-    @POST("/save-user")
-    fun saveUser(@Body requestBody: RequestBody): Call<RegisterResponse>
+    @POST("/saveUser")
+    fun saveUser(@Body user: User): Call<RegisterResponse>
 
-    @POST("/delete-user/{userId}")
-    fun deleteUser(@Body userId: Int): Call<User>
+    @POST("/setUserImage/{userId}")
+    fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<Unit>
+
+    @POST("/deleteUserImage/{userId}")
+    fun deleteUserImage(@Path("userId") userId: Int): Call<Unit>
+
+    @POST("/deleteUser/{userId}")
+    fun deleteUser(@Body userId: Int): Call<Unit>
 
     //list
-    @GET("/get-lists/{ownerId}")
+    @GET("/getLists/{ownerId}")
     fun getLists(@Path("ownerId") ownerId: Int): Call<List<com.miaekebom.mynotesapp.model.data.List>>
 
-    @POST("/save-list/{ownerId}")
+    @POST("/saveList/{ownerId}")
     fun saveList(@Path("ownerId") ownerId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
 
-    @POST("/delete-list/{listId}")
+    @POST("/deleteList/{listId}")
     fun deleteList(@Path("listId") listId: Int): Call<Unit>
 
-    @POST("/update-list-name/{listId}")
+    @POST("/updateListName/{listId}")
     fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
+
+    //note
 
 }

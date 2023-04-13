@@ -8,12 +8,10 @@ import com.google.gson.annotations.SerializedName
 data class User(
 
     @PrimaryKey
-    @SerializedName("userId")
-    val userId: Int,
+    val id: Int,
     val email: String,
     val fullName: String,
-    val userPwd: String,
-    val confirmUserPwd: String
-){
-constructor(): this(0,"","", "", ""
-)}
+    val image: String?,
+    val pwd: String,
+    val confirmPwd: String)
+{ constructor(): this(0,"","", "", "", "" )}

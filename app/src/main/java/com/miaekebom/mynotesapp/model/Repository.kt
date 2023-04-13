@@ -13,36 +13,43 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override fun addNewUser(requestBody: RequestBody): Call<RegisterResponse> {
-        return serverManager.addNewUser(requestBody)
+    override fun addNewUser(user: User): Call<RegisterResponse> {
+        return serverManager.addNewUser(user)
     }
 
-    override fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
+    override suspend fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
         return serverManager.loginUser(loginRequest)
     }
 
-
-    override fun deleteUser(userId: String) {
-        serverManager.deleteUser(userId)
+    override fun setUserImage(userId: Int, image: String): Call<Unit> {
+        return serverManager.setUserImage(userId, image)
     }
 
-    override fun addNote(listId: String, note: Note) {
+    override fun deleteUserImage(userId: Int): Call<Unit> {
+        return serverManager.deleteUserImage(userId)
+    }
+
+    override fun deleteUser(userId: Int): Call<Unit> {
+        return serverManager.deleteUser(userId)
+    }
+
+    override fun addNote(listId: Int, note: Note) {
         serverManager.addNote(listId, note)
     }
 
-    override fun deleteNote(listId: String, noteId: String) {
+    override fun deleteNote(listId: Int, noteId: Int) {
         serverManager.deleteNote(listId, noteId)
     }
 
-    override fun updateNote(listId: String, noteId: String) {
+    override fun updateNote(listId: Int, noteId: Int) {
         serverManager.updateNote(listId, noteId)
     }
 
-    override fun getAllNotes(listId: String): kotlin.collections.List<Note>? {
+    override fun getAllNotes(listId: Int): kotlin.collections.List<Note>? {
         return serverManager.getAllListNotes(listId)
     }
 
-    override  fun addList(ownerId: Int, list: List): Call<Unit> {
+    override fun addList(ownerId: Int, list: List): Call<Unit> {
         return serverManager.addList(ownerId, list)
     }
 

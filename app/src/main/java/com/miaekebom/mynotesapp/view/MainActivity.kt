@@ -11,6 +11,8 @@ import androidx.activity.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.R
+import com.miaekebom.mynotesapp.model.utils.ImagesHandler.getImageFromCamera
+import com.miaekebom.mynotesapp.model.utils.ImagesHandler.getImageFromGallery
 import com.miaekebom.mynotesapp.model.utils.SharedPref
 import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.viewmodel.ListViewModel
@@ -19,6 +21,8 @@ import kotlinx.android.synthetic.main.about.*
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.add_list_dialog.*
 import kotlinx.android.synthetic.main.add_list_dialog.view.*
+import kotlinx.android.synthetic.main.choose_image_dialog.*
+import kotlinx.android.synthetic.main.choose_image_dialog.view.*
 import kotlinx.android.synthetic.main.edit_text_dialog.*
 import kotlinx.android.synthetic.main.edit_text_dialog.view.*
 import kotlinx.coroutines.Dispatchers
@@ -40,28 +44,39 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         TV_user_name.text = intent.getStringExtra("username")
-        getLists()
-        addList()
-
+        onUserImageClick()
+        onAddListClick()
+        loadLists()
     }
 
-    private fun getLists(){
-        listViewModel.getAllUserLists(SharedPref.getInstance(this).getUser().userId).enqueue(object :Callback<List<com.miaekebom.mynotesapp.model.data.List>>{
-            override fun onResponse(
-                call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
-                response: Response<List<com.miaekebom.mynotesapp.model.data.List>>
-            ) {
-                response.body().let {
-                    it?.let {
-                        loadedLists = it
-                        createRecyclerView(it)
+    private fun onUserImageClick() {
+        val image = IB_user_profile
+        image.setOnClickListener {
+            displayChooseImageDialog()
+        }
+    }
+
+    private fun loadLists(){
+        listViewModel.viewModelScope.launch(Dispatchers.IO) {
+
+            listViewModel.getAllUserLists(SharedPref.getInstance(this@MainActivity).getUser().id).enqueue(object :Callback<List<com.miaekebom.mynotesapp.model.data.List>>{
+                override fun onResponse(
+                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
+                    response: Response<List<com.miaekebom.mynotesapp.model.data.List>>
+                ) {
+                    response.body().let {
+                        it?.let {
+                            loadedLists = it
+                            createRecyclerView(it)
+                        }
                     }
                 }
-            }
-            override fun onFailure(
-                call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
-                t: Throwable) { error(t) }
-        })
+                override fun onFailure(
+                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
+                    t: Throwable) { error(t) }
+            })
+        }
+
     }
 
     private fun createRecyclerView(list: List<com.miaekebom.mynotesapp.model.data.List>){
@@ -76,12 +91,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onListTitleClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit = {
-        displayNotesActivity(it.listName)
+        displayNotesActivity(it.title)
     }
 
     private fun onListRemoveClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit =  {
-        listViewModel.viewModelScope.launch(Dispatchers.Unconfined) {
-            listViewModel.deleteList(it.listId).enqueue(object: Callback<Unit>{
+        listViewModel.viewModelScope.launch(Dispatchers.IO) {
+            listViewModel.deleteList(it.id).enqueue(object: Callback<Unit>{
                 override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
                     if (response.isSuccessful)
                         displayToast("Deleted successfully")
@@ -95,7 +110,7 @@ class MainActivity : AppCompatActivity() {
         displayEditNameDialog(it)
     }
 
-    private fun addList() {
+    private fun onAddListClick() {
         IB_create_list.setOnClickListener {
             displayCreateListDialog()
         }
@@ -122,7 +137,7 @@ class MainActivity : AppCompatActivity() {
     private fun searchItem(text: String) {
         val filteredList: ArrayList<com.miaekebom.mynotesapp.model.data.List> = ArrayList()
         for (item in loadedLists) {
-            if (item.listName.lowercase().contains(text.lowercase())) {
+            if (item.title.lowercase().contains(text.lowercase())) {
                 filteredList.add(item)
             }
         }
@@ -166,13 +181,15 @@ class MainActivity : AppCompatActivity() {
 
         createListB.setOnClickListener {
             val list = com.miaekebom.mynotesapp.model.data.List(1, 1, listName.toString())
-            listViewModel.addList(list.ownerId, list).enqueue(object: Callback<Unit>{
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if (response.isSuccessful)
-                        displayToast("Saved successfully")
-                }
-                override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) }
-            })
+            listViewModel.viewModelScope.launch(Dispatchers.IO) {
+                listViewModel.addList(list.ownerId, list).enqueue(object: Callback<Unit>{
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if (response.isSuccessful)
+                            displayToast("Saved successfully")
+                    }
+                    override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) }
+                })
+            }
             dialog.dismiss()
         }
     }
@@ -185,37 +202,72 @@ class MainActivity : AppCompatActivity() {
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
 
-        val editListName = view.ET_new_list_name.text.append(list.listName)
+        val editListName = view.ET_new_list_name.text.append(list.title)
         val saveB = view.B_save_changes
         val cancelB = view.B_cancel_changes
 
         saveB.setOnClickListener {
             val updatedList = com.miaekebom.mynotesapp.model.data.List(
-                list.listId,
+                list.id,
                 list.ownerId,
                 editListName.toString()
             )
-            listViewModel.updateList(list.listId, updatedList).enqueue(object: Callback<Unit>{
+            listViewModel.viewModelScope.launch(Dispatchers.IO){
+                listViewModel.updateList(list.id, updatedList).enqueue(object: Callback<Unit>{
 
-                override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
-                    if (response.isSuccessful)
-                        displayToast("Updated successfully")
-                    dialog.dismiss()
-                }
-                override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) }
-            })
+                    override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                        if (response.isSuccessful)
+                            displayToast("Updated successfully")
+                        dialog.dismiss()
+                    }
+                    override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) }
+                })
+            }
         }
         cancelB.setOnClickListener { dialog.dismiss() }
     }
 
+    private fun displayChooseImageDialog(){
+        val view = layoutInflater.inflate(R.layout.choose_image_dialog, CV_choose_image_dialog, false)
+        val dialog = AlertDialog.Builder(this)
+            .setView(view)
+            .create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+
+        val galleryImage = view.B_image_from_gallery
+        val cameraImage = B_image_from_camera
+        val delImage = B_delete_image
+
+        galleryImage.setOnClickListener { imageFromGallery() }
+        cameraImage.setOnClickListener { imageFromCamera() }
+        delImage.setOnClickListener { deleteImage() }
+    }
+
+    private fun deleteImage() {
+
+    }
+
+    private fun imageFromCamera() {
+        getImageFromCamera()
+    }
+
+    private fun imageFromGallery() {
+        getImageFromGallery()
+    }
+
     private fun displayNotesActivity(listName: String){
-        val intent = Intent(this, NotesActivity::class.java)
-        intent.putExtra("listName",listName)
-        startActivity(intent)
+        runOnUiThread {
+            val intent = Intent(this, NotesActivity::class.java)
+            intent.putExtra("listName",listName)
+            startActivity(intent)
+        }
     }
 
     fun displayToast(text: String){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+        runOnUiThread {
+            Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+        }
     }
 
     fun error(t: Throwable){

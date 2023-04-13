@@ -7,12 +7,9 @@ import androidx.room.PrimaryKey
 data class List(
 
     @PrimaryKey
-    val listId: Int,
+    val id: Int,
     val ownerId: Int,
-    val listName: String,
-    val createdAt: Long = System.currentTimeMillis()
-
-){
-    constructor(): this(0,0,"", System.currentTimeMillis()
-    )}
+    val title: String,
+    val createdAt: Long = System.currentTimeMillis())
+{ constructor(): this(0,0,"", System.currentTimeMillis())}
 
