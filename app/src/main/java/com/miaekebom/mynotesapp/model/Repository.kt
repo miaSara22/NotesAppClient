@@ -5,6 +5,7 @@ import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import javax.inject.Inject
 
@@ -13,19 +14,19 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override fun addNewUser(user: User): Call<RegisterResponse> {
+    override fun addNewUser(user: User) {
         return serverManager.addNewUser(user)
     }
 
-    override suspend fun loginUser(loginRequest: LoginRequest): Call<LoginResponse> {
+    override suspend fun loginUser(loginRequest: LoginRequest){
         return serverManager.loginUser(loginRequest)
     }
 
-    override fun setUserImage(userId: Int, image: String): Call<Unit> {
+    override fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
         return serverManager.setUserImage(userId, image)
     }
 
-    override fun deleteUserImage(userId: Int): Call<Unit> {
+    override fun deleteUserImage(userId: Int): Call<ResponseBody> {
         return serverManager.deleteUserImage(userId)
     }
 

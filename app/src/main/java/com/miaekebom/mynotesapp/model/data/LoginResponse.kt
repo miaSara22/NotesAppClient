@@ -3,6 +3,8 @@ package com.miaekebom.mynotesapp.model.data
 import com.google.gson.annotations.SerializedName
 
 data class LoginResponse(
-    @SerializedName("token") var token: String,
-    @SerializedName("email") var email: String,
-    @SerializedName("fullName") var fullName: String)
+    @SerializedName("success") var success: Boolean,
+    @SerializedName("message") var message: String,
+    @SerializedName("token") val token: String,
+    @SerializedName("email") val email: String,
+    @SerializedName("fullName") val fullName: String)

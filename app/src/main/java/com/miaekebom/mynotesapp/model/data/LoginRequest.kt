@@ -7,4 +7,3 @@ data class LoginRequest(
     private val email: String,
     @SerializedName("pwd")
     private val pwd: String)
-{constructor():this ("","")}

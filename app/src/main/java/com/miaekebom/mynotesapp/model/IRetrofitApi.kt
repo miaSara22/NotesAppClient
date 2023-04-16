@@ -1,11 +1,9 @@
 package com.miaekebom.mynotesapp.model
 
-import com.miaekebom.mynotesapp.model.data.LoginRequest
-import com.miaekebom.mynotesapp.model.data.LoginResponse
-import com.miaekebom.mynotesapp.model.data.RegisterResponse
-import com.miaekebom.mynotesapp.model.data.User
+import com.miaekebom.mynotesapp.model.data.*
 import okhttp3.OkHttpClient
 import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
 import retrofit2.Retrofit
@@ -48,16 +46,18 @@ interface IRetrofitApi {
     fun getAllUsers(): Call<List<User>>
 
     @POST("/loginUser")
+    @Headers("Content-Type: application/json")
     fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @POST("/saveUser")
+    @Headers("Content-Type: application/json")
     fun saveUser(@Body user: User): Call<RegisterResponse>
 
     @POST("/setUserImage/{userId}")
-    fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<Unit>
+    fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
 
     @POST("/deleteUserImage/{userId}")
-    fun deleteUserImage(@Path("userId") userId: Int): Call<Unit>
+    fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
 
     @POST("/deleteUser/{userId}")
     fun deleteUser(@Body userId: Int): Call<Unit>

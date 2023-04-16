@@ -14,4 +14,4 @@ data class User(
     val image: String?,
     val pwd: String,
     val confirmPwd: String)
-{ constructor(): this(0,"","", "", "", "" )}
+{ constructor(): this(0,"","", null, "", "" )}
