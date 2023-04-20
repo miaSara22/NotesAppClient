@@ -19,13 +19,10 @@ class RegistrationActivity : AppCompatActivity() {
         binding = ActivityRegistrationBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-
         binding.BToLoginPage.setOnClickListener {
-            DialogsManager.displayLoginDialog(this, registrationViewModel)
-        }
+            DialogsManager.displayLoginDialog(this, registrationViewModel) }
 
         binding.BToRegisterPage.setOnClickListener {
-            DialogsManager.displayRegisterDialog(this, registrationViewModel)
-        }
+            DialogsManager.displayRegisterDialog(this, registrationViewModel) }
     }
 }

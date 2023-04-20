@@ -63,8 +63,7 @@ class MainActivity : AppCompatActivity() {
             mainViewModel.getAllUserLists(SharedPref.getInstance(this@MainActivity).getUser().id).enqueue(object :Callback<List<com.miaekebom.mynotesapp.model.data.List>>{
                 override fun onResponse(
                     call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
-                    response: Response<List<com.miaekebom.mynotesapp.model.data.List>>
-                ) {
+                    response: Response<List<com.miaekebom.mynotesapp.model.data.List>>) {
                     response.body().let {
                         it?.let {
                             loadedLists = it
@@ -73,11 +72,8 @@ class MainActivity : AppCompatActivity() {
                     }
                 }
                 override fun onFailure(
-                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
-                    t: Throwable) { error(t) }
-            })
+                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>, t: Throwable) { error(t) } })
         }
-
     }
 
     private fun createRecyclerView(list: List<com.miaekebom.mynotesapp.model.data.List>){
@@ -105,11 +101,9 @@ class MainActivity : AppCompatActivity() {
         displayEditNameDialog(this, mainViewModel, it)
     }
 
-
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
         inflater.inflate(R.menu.menu, menu)
-
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView: androidx.appcompat.widget.SearchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -151,18 +145,13 @@ class MainActivity : AppCompatActivity() {
         runOnUiThread {
             val intent = Intent(this, NotesActivity::class.java)
             intent.putExtra("listName",listName)
-            startActivity(intent)
-        }
+            startActivity(intent) }
     }
 
     private fun displayToast(text: String){
-        runOnUiThread {
-            Toast.makeText(this, text, Toast.LENGTH_LONG).show()
-        }
-    }
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show() }
 
     fun error(t: Throwable){
         Logger.getLogger(MainActivity::class.java.name).log(Level.SEVERE, "Error occurred", t)
-        displayToast("An error occurred. Please try again later")
-    }
+        displayToast("An error occurred. Please try again later") }
 }
