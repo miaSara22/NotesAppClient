@@ -21,6 +21,7 @@ interface IRetrofitApi {
 
             val httpClient = OkHttpClient.Builder()
                 .addInterceptor(loggingInterceptor)
+
                 .addInterceptor { chain ->
                     val request = chain.request().newBuilder()
                         .addHeader("Authorization", "Bearer $authToken")

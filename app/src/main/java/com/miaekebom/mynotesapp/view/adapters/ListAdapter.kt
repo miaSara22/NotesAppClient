@@ -1,78 +1,62 @@
 package com.miaekebom.mynotesapp.view.adapters
 
-import android.view.View
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.ImageButton
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.miaekebom.mynotesapp.R
+import com.miaekebom.mynotesapp.databinding.RowListItemBinding
 import com.miaekebom.mynotesapp.model.data.List
-import kotlinx.android.synthetic.main.row_list_item.view.*
 
-class ListAdapter(private var dataList: MutableList<com.miaekebom.mynotesapp.model.data.List>,
-                  private val onListTitleClick: (com.miaekebom.mynotesapp.model.data.List) -> Unit,
-                  private val onListRemoveClick: (com.miaekebom.mynotesapp.model.data.List) -> Unit,
-                  private val onListEditNameClick: (List) -> Unit
-                   ):
-    RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
+class ListAdapter(
+    private var dataList: MutableList<List>,
+    private val onListTitleClick: (List) -> Unit,
+    private val onListRemoveClick: (List) -> Unit,
+    private val onListEditNameClick: (List) -> Unit) : RecyclerView.Adapter<ListAdapter.ListViewHolder>() {
 
-        class ListViewHolder(view: View): RecyclerView.ViewHolder(view) {
+    inner class ListViewHolder(private val binding: RowListItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
-            val listTitle: TextView
-            val listDelB: ImageButton
-            val listEditB: ImageButton
+        fun bind(list: List) {
 
-            init {
-
-                listTitle = view.TV_list_name
-                listDelB = view.IB_list_del
-                listEditB = view.IB_edit_list_name
-
+            binding.TVListName.text = list.title
+            binding.TVListName.setOnClickListener {
+                onListTitleClick.invoke(list)
+            }
+            binding.IBListDel.setOnClickListener {
+                onListRemoveClick(list)
+            }
+            binding.IBEditListName.setOnClickListener {
+                onListEditNameClick(list)
             }
         }
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListViewHolder {
-        val view = View.inflate(parent.context, R.layout.row_list_item, null)
-        return ListViewHolder(view)
+        val binding =
+            RowListItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return ListViewHolder(binding)
     }
 
     override fun onBindViewHolder(holder: ListViewHolder, position: Int) {
-
         val list = dataList[position]
-
-        holder.listTitle.text = list.title
-        holder.listTitle.setOnClickListener {
-            onListTitleClick.invoke(list)
-        }
-
-        holder.listDelB.setOnClickListener {
-            onListRemoveClick(list)
-        }
-
-        holder.listEditB.setOnClickListener {
-            onListEditNameClick(list)
-        }
+        holder.bind(list)
     }
 
-    override fun getItemCount(): Int {
-        return dataList.size
-    }
+    override fun getItemCount(): Int = dataList.size
 
-    fun searchItem(result: ArrayList<com.miaekebom.mynotesapp.model.data.List>){
+    fun searchItem(result: ArrayList<List>) {
         dataList = result
         notifyDataSetChanged()
     }
 
-//    fun updateItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List){
-//        adapter.notifyItemChanged(item)
-//
-//    }
-//
-//    fun deleteItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List){
-//        adapter.notifyItemRemoved(item.listId)
-//    }
-//
-//    fun addItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List){
-//        adapter.notifyItemInserted(item.listId)
-//    }
+    fun updateItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
+        adapter.notifyItemChanged(item.id)
+    }
+
+    fun deleteItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
+        adapter.notifyItemRemoved(item.id)
+    }
+
+    fun addItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
+        adapter.notifyItemInserted(item.id)
+    }
 }

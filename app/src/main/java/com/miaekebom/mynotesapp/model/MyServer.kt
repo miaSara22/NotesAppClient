@@ -44,10 +44,12 @@ class MyServer @Inject constructor(
 
                         if (registerResponse.success) {
                             userDao.insertUser(user)
+                            println(registerResponse.message)
                             displayToast("You Registered Successfully! please login.")
 
                         } else {
-                            displayToast(registerResponse.message ?: "Registration failed. please try again later.")
+                            displayToast(registerResponse.message)
+                            println(registerResponse.message)
                         }
                     }
                 }
@@ -63,9 +65,11 @@ class MyServer @Inject constructor(
                     val token = response.token
                     sharedPref.setUserToken(token)
                     displayToast(response.message)
+                    println(response.message)
 
                 } else {
-                    displayToast(response?.message.toString() ?: "Login failed")
+                    displayToast(response?.message.toString())
+                    println(response?.message)
                 }
             }
             override fun onFailure(call: Call<LoginResponse>, t: Throwable) { error(t) } })
