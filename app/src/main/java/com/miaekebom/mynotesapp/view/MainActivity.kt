@@ -93,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun onListRemoveClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit =  {
         mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-            mainViewModel.deleteList(it.id)
+            mainViewModel.deleteList(it)
         }
     }
 

@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Toast
+import androidx.compose.runtime.saveable.autoSaver
 import androidx.lifecycle.viewModelScope
 import com.miaekebom.mynotesapp.databinding.*
 import com.miaekebom.mynotesapp.model.data.LoginRequest
@@ -108,7 +109,7 @@ object DialogsManager {
             val listName = listNameDialogET.text
 
             addListDialogB.setOnClickListener {
-                val list = com.miaekebom.mynotesapp.model.data.List(1, 1, listName.toString())
+                val list = com.miaekebom.mynotesapp.model.data.List(0, SharedPref.getInstance(context).getUser().id, listName.toString())
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
                     mainViewModel.addList(list.ownerId, list)}
                 dialog.dismiss()

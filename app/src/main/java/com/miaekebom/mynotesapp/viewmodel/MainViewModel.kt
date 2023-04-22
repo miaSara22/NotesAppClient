@@ -11,15 +11,15 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: IRepository): ViewModel(){
 
-    fun addList(ownerId: Int, list: com.miaekebom.mynotesapp.model.data.List): Call<Unit> {
+    fun addList(ownerId: Int, list: com.miaekebom.mynotesapp.model.data.List) {
         return repository.addList(ownerId, list)
     }
 
-    fun deleteList(listId: Int): Call<Unit> {
-        return repository.deleteList(listId)
+    fun deleteList(list: List) {
+        return repository.deleteList(list)
     }
 
-    fun updateList(listId: Int, list: com.miaekebom.mynotesapp.model.data.List): Call<Unit> {
+    fun updateList(listId: Int, list: com.miaekebom.mynotesapp.model.data.List) {
         return repository.updateList(listId, list)
     }
 

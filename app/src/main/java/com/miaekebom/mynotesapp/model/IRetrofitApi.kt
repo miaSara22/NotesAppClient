@@ -77,5 +77,16 @@ interface IRetrofitApi {
     fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
 
     //note
+    @POST("/saveNote/{ownerId}")
+    fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note): Call<Unit>
+
+    @POST("/deleteNote/{noteId}")
+    fun deleteNote(@Path("noteId") noteId: Int): Call<Unit>
+
+    @POST("/updateNote/{noteId}")
+    fun updateNote(@Path("noteId") noteId: Int, @Body note: Note): Call<Unit>
+
+    @GET("/getNotes/{ownerId}")
+    fun getNotes(@Path("ownerId") ownerId: Int): Call<List<Note>>
 
 }

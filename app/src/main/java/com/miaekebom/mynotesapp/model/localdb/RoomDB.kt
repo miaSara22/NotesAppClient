@@ -13,6 +13,7 @@ abstract class RoomDB: RoomDatabase() {
 
     abstract fun getUserDao(): UserDao
     abstract fun getListDao(): ListDao
+    abstract fun getNoteDao(): NoteDao
 
     companion object{
         fun getDatabase(context: Context): RoomDB {

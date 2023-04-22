@@ -13,12 +13,12 @@ class NoteViewModel @Inject constructor(private val repository: IRepository): Vi
         repository.addNote(listId, note)
     }
 
-    fun deleteNote(listId: Int, noteId: Int){
-        repository.deleteNote(listId, noteId)
+    fun deleteNote(note: Note){
+        repository.deleteNote(note)
     }
 
-    fun updateNote(listId: Int, noteId: Int){
-        repository.updateNote(listId, noteId)
+    fun updateNote(noteId: Int, note: Note){
+        repository.updateNote(noteId,note)
     }
 
     fun getAllNotes(listId: Int){

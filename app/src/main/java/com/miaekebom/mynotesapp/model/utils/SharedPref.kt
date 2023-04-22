@@ -11,7 +11,6 @@ const val id = "ID"
 const val token = "TOKEN"
 const val noteTimestamp = "NOTE_TIMESTAMP"
 const val listTimeStamp = "LIST_TIMESTAMP"
-const val loginTimestamp = "LOGIN_TIMESTAMP"
 
 class SharedPref private constructor(context: Context) {
 
@@ -30,45 +29,38 @@ class SharedPref private constructor(context: Context) {
 
     fun setUser(user: User) {
         sharePref.edit()
+            .putInt(id, user.id)
             .putString(fullName, user.fullName)
             .putString(email, user.email)
-            .apply()
-    }
+            .apply() }
 
     fun getUser(): User {
         val id = sharePref.getInt(id, 0)
         val email = sharePref.getString(email, "")
         val fullName = sharePref.getString(fullName, "")
-        return User( 2,email.toString(), fullName.toString(), "", "", "")
-    }
+        return User( id ,email.toString(), fullName.toString(), "", "", "") }
 
     fun setUserToken(jwtToken: String){
         sharePref.edit()
             .putString(token, jwtToken)
-            .apply()
-    }
+            .apply() }
 
     fun getUserToken(): String {
-        return sharePref.getString(token,null).toString()
-    }
-
-    fun setLoginTimestamp() {
-        sharePref.edit()
-            .putLong(loginTimestamp, System.currentTimeMillis())
-            .apply()
-    }
-
-    fun getLoginTimestamp(): Long {
-        return sharePref.getLong(loginTimestamp, -1)
-    }
+        return sharePref.getString(token,null).toString() }
 
     fun setNoteTimestamp() {
         sharePref.edit()
             .putLong(noteTimestamp, System.currentTimeMillis())
-            .apply()
-    }
+            .apply() }
 
     fun getNoteTimestamp(): Long {
-        return sharePref.getLong(noteTimestamp, -1)
-    }
+        return sharePref.getLong(noteTimestamp, -1) }
+
+    fun setListTimestamp() {
+        sharePref.edit()
+            .putLong(listTimeStamp, System.currentTimeMillis())
+            .apply() }
+
+    fun getListTimestamp(): Long {
+        return sharePref.getLong(listTimeStamp, -1) }
 }

@@ -18,16 +18,11 @@ import javax.inject.Inject
 class MyServer @Inject constructor(
     @ApplicationContext val context: Context): IServerManager {
 
-    //shared prefs
     private val sharedPref = SharedPref.getInstance(context)
-
-    //retrofit
     private val authToken = sharedPref.getUserToken()
     private val api = IRetrofitApi.create(authToken)
-
-    //localdb
     private val listDao = RoomDB.getDatabase(context).getListDao()
-    //private val noteDao = RoomDB.getDatabase(context).getNoteDao()
+    private val noteDao = RoomDB.getDatabase(context).getNoteDao()
     private val userDao = RoomDB.getDatabase(context).getUserDao()
 
 
@@ -49,8 +44,7 @@ class MyServer @Inject constructor(
 
                         } else {
                             displayToast(registerResponse.message)
-                            println(registerResponse.message)
-                        }
+                            println(registerResponse.message) }
                     }
                 }
             }
@@ -62,8 +56,13 @@ class MyServer @Inject constructor(
             override fun onResponse(call: Call<LoginResponse>, response: Response<LoginResponse>) {
                 val response = response.body()
                 if (response != null && response.success){
+
                     val token = response.token
+                    val user = User(response.id, response.email, response.fullName,null, "","")
+
                     sharedPref.setUserToken(token)
+                    sharedPref.setUser(user)
+
                     displayToast(response.message)
                     println(response.message)
 
@@ -83,46 +82,106 @@ class MyServer @Inject constructor(
         return api.deleteUserImage(userId)
     }
 
-    override fun deleteUser(userId: Int): Call<Unit> {
-        return api.deleteUser(userId)
+    override fun deleteUser(user: User) {
+        api.deleteUser(user.id).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    userDao.deleteUser(user)
+                    displayToast("User deleted successfully") }
+                else {
+                    displayToast("Couldn't delete user. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
     }
 
-    override fun addNote(listId: Int, note: Note) {
-        TODO("Not yet implemented")
+    override fun addList(ownerId: Int, list: List) {
+        api.saveList(ownerId, list).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    listDao.insertList(list)
+                    sharedPref.getListTimestamp()
+                    displayToast("List added successfully")
+                } else {
+                       displayToast("Couldn't save list. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
     }
 
-    override fun deleteNote(noteId: Int, listId: Int) {
-        TODO("Not yet implemented")
+    override fun deleteList(list: List) {
+        api.deleteList(list.id).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    listDao.deleteList(list)
+                    displayToast("List deleted successfully") }
+                else {
+                    displayToast("Couldn't delete list. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
     }
 
-    override fun updateNote(listId: Int, noteId: Int) {
-        TODO("Not yet implemented")
-    }
-
-    override fun getAllListNotes(listId: Int): kotlin.collections.List<Note>? {
-        TODO("Not yet implemented")
-    }
-
-    override fun addList(
-        ownerId: Int,
-        list: List
-    ): Call<Unit> {
-        return api.saveList(ownerId, list)
-    }
-
-    override fun deleteList(listId: Int): Call<Unit> {
-        return api.deleteList(listId)
-    }
-
-    override fun updateList(
-        listId: Int,
-        list: List
-    ): Call<Unit> {
-        return api.updateList(listId, list)
+    override fun updateList(listId: Int, list: List) {
+        api.updateList(listId, list).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    listDao.updateList(list)
+                    displayToast("List updated successfully") }
+                else {
+                    displayToast("Couldn't update list. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
     }
 
     override fun getUserLists(ownerId: Int): Call<kotlin.collections.List<List>> {
         return api.getLists(ownerId)
+    }
+
+
+    override fun addNote(listId: Int, note: Note) {
+        api.saveNote(listId, note).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful) {
+                    noteDao.insertNote(note)
+                    displayToast("Note saved successfully")
+                } else {
+                    displayToast("Couldn't save note. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
+    }
+
+    override fun deleteNote(note: Note) {
+        api.deleteNote(note.id).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful){
+                    noteDao.deleteNote(note)
+                    displayToast("Note deleted successfully")
+                } else {
+                    displayToast("Couldn't delete note. Please try again later")
+                }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
+    }
+
+    override fun updateNote(noteId: Int, note: Note) {
+        api.updateNote(noteId, note).enqueue(object : Callback<Unit>{
+            override fun onResponse(call: Call<Unit>, response: Response<Unit>) {
+                if (response.isSuccessful){
+                    noteDao.updateNote(note)
+                    displayToast("Note updated successfully")
+                } else {
+                    displayToast("Couldn't update note. Please try again later") }
+            }
+            override fun onFailure(call: Call<Unit>, t: Throwable) { error(t) } })
+    }
+
+    override fun getAllListNotes(listId: Int) {
+        api.getNotes(listId).enqueue(object : Callback<kotlin.collections.List<Note>>{
+            override fun onResponse(
+                call: Call<kotlin.collections.List<Note>>,
+                response: Response<kotlin.collections.List<Note>>
+            ) {
+
+            }
+            override fun onFailure(call: Call<kotlin.collections.List<Note>>, t: Throwable) { error(t) } })
     }
 
     fun error(t: Throwable){

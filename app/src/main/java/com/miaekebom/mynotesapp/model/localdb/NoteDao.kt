@@ -5,16 +5,17 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Update
 import com.miaekebom.mynotesapp.model.data.List
+import com.miaekebom.mynotesapp.model.data.Note
 
 @Dao
-interface ListDao {
+interface NoteDao {
 
     @Insert
-    fun insertList(list: List)
+    fun insertNote(note: Note)
 
     @Delete
-    fun deleteList(list: List)
+    fun deleteNote(note: Note)
 
     @Update
-    fun updateList(list: List)
+    fun updateNote(note: Note)
 }

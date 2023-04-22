@@ -22,7 +22,7 @@ class RegistrationViewModel @Inject constructor(private val repository: IReposit
         return repository.loginUser(loginRequest)
     }
 
-    fun deleteUser(userId: Int): Call<Unit>{
-        return repository.deleteUser(userId)
+    fun deleteUser(user: User) {
+        return repository.deleteUser(user)
     }
 }

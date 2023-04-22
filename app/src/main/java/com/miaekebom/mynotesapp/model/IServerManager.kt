@@ -15,15 +15,16 @@ interface IServerManager {
     suspend fun loginUser(loginRequest: LoginRequest)
     fun setUserImage(userId: Int, image: String): Call<ResponseBody>
     fun deleteUserImage(userId: Int): Call<ResponseBody>
-    fun deleteUser(userId: Int): Call<Unit>
+    fun deleteUser(user: User)
 
     fun addNote(listId: Int, note: Note)
-    fun deleteNote(listId: Int, noteId: Int)
-    fun updateNote(listId: Int, noteId: Int)
-    fun getAllListNotes(listId: Int): kotlin.collections.List<Note>?
+    fun deleteNote(note: Note)
+    fun getAllListNotes(listId: Int)
+    fun updateNote(noteId: Int, note: Note)
 
-    fun addList(ownerId: Int, list: List): Call<Unit>
-    fun deleteList(listId: Int): Call<Unit>
-    fun updateList(listId: Int, list: List): Call<Unit>
+    fun addList(ownerId: Int, list: List)
+    fun deleteList(list: List)
+    fun updateList(listId: Int, list: List)
     fun getUserLists(ownerId: Int): Call<kotlin.collections.List<List>>
+
 }
