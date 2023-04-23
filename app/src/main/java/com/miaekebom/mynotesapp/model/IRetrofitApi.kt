@@ -44,49 +44,49 @@ interface IRetrofitApi {
 
     //user
     @GET("/getAllUsers")
-    fun getAllUsers(): Call<List<User>>
+    suspend fun getAllUsers(): Call<List<User>>
 
     @POST("/loginUser")
     @Headers("Content-Type: application/json")
-    fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
+    suspend fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
 
     @POST("/saveUser")
     @Headers("Content-Type: application/json")
-    fun saveUser(@Body user: User): Call<RegisterResponse>
+    suspend fun saveUser(@Body user: User): Call<RegisterResponse>
 
     @POST("/setUserImage/{userId}")
-    fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
+    suspend fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
 
     @POST("/deleteUserImage/{userId}")
-    fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
+    suspend fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
 
     @POST("/deleteUser/{userId}")
-    fun deleteUser(@Body userId: Int): Call<Unit>
+    suspend fun deleteUser(@Body userId: Int): Call<Unit>
 
     //list
     @GET("/getLists/{ownerId}")
-    fun getLists(@Path("ownerId") ownerId: Int): Call<List<com.miaekebom.mynotesapp.model.data.List>>
+    suspend fun getLists(@Path("ownerId") ownerId: Int): Call<List<com.miaekebom.mynotesapp.model.data.List>>
 
     @POST("/saveList/{ownerId}")
-    fun saveList(@Path("ownerId") ownerId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
+    suspend fun saveList(@Path("ownerId") ownerId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
 
     @POST("/deleteList/{listId}")
-    fun deleteList(@Path("listId") listId: Int): Call<Unit>
+    suspend fun deleteList(@Path("listId") listId: Int): Call<Unit>
 
     @POST("/updateListName/{listId}")
-    fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
+    suspend fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
 
     //note
     @POST("/saveNote/{ownerId}")
-    fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note): Call<Unit>
+    suspend fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note): Call<Unit>
 
     @POST("/deleteNote/{noteId}")
-    fun deleteNote(@Path("noteId") noteId: Int): Call<Unit>
+    suspend fun deleteNote(@Path("noteId") noteId: Int): Call<Unit>
 
     @POST("/updateNote/{noteId}")
-    fun updateNote(@Path("noteId") noteId: Int, @Body note: Note): Call<Unit>
+    suspend fun updateNote(@Path("noteId") noteId: Int, @Body note: Note): Call<Unit>
 
     @GET("/getNotes/{ownerId}")
-    fun getNotes(@Path("ownerId") ownerId: Int): Call<List<Note>>
+    suspend fun getNotes(@Path("ownerId") ownerId: Int): Call<List<Note>>
 
 }

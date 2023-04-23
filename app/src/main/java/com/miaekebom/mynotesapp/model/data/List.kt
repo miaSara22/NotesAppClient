@@ -6,10 +6,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "lists")
 data class List(
 
-    @PrimaryKey
-    val id: Int,
-    val ownerId: Int,
-    val title: String,
-    val createdAt: Long = System.currentTimeMillis())
+    @PrimaryKey(autoGenerate = true)
+    var id: Int = 0,
+    var ownerId: Int,
+    var title: String,
+    var createdAt: Long = System.currentTimeMillis())
+
 { constructor(): this(0,0,"", System.currentTimeMillis())}
 
