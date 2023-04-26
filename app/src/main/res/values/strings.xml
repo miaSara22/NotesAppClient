@@ -37,5 +37,7 @@
     <string name="contact_us">- Contact Us -</string>
     <string name="delete_my_account">- Delete My Account -</string>
     <string name="please_wait">Please Wait…</string>
+    <string name="delete">Delete</string>
+    <string name="edit">Edit</string>
 
 </resources>

@@ -4,7 +4,6 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.activity.viewModels
 import com.miaekebom.mynotesapp.databinding.ActivityRegistrationBinding
-import com.miaekebom.mynotesapp.model.utils.DialogsManager
 import com.miaekebom.mynotesapp.viewmodel.RegistrationViewModel
 import dagger.hilt.android.AndroidEntryPoint
 

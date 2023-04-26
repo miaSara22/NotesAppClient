@@ -14,7 +14,7 @@
     android:id="@+id/LL_edit_text_dialog">
 
     <EditText
-        android:id="@+id/ET_new_list_name"
+        android:id="@+id/ET_new_name"
         android:layout_gravity="center"
         android:layout_marginBottom="35dp"
         android:layout_width="match_parent"

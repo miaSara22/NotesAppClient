@@ -2,10 +2,10 @@ package com.miaekebom.mynotesapp.model
 
 import com.miaekebom.mynotesapp.model.data.*
 import okhttp3.OkHttpClient
-import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.*
@@ -30,7 +30,6 @@ interface IRetrofitApi {
                 }
                 .build()
 
-
             val retrofit = Retrofit
             .Builder()
             .addConverterFactory(GsonConverterFactory.create())
@@ -44,15 +43,16 @@ interface IRetrofitApi {
 
     //user
     @GET("/getAllUsers")
-    suspend fun getAllUsers(): Call<List<User>>
+    @Headers("Content-Type: application/json")
+    suspend fun getAllUsers(@Header("Authorization") authToken: String): List<User>
 
     @POST("/loginUser")
     @Headers("Content-Type: application/json")
-    suspend fun loginUser(@Body loginRequest: LoginRequest): Call<LoginResponse>
+    suspend fun loginUser(@Body loginRequest: LoginRequest, @Header("Authorization") authToken: String? = null): LoginResponse
 
     @POST("/saveUser")
     @Headers("Content-Type: application/json")
-    suspend fun saveUser(@Body user: User): Call<RegisterResponse>
+    suspend fun saveUser(@Body user: User, @Header("Authorization") authToken: String? = null): com.miaekebom.mynotesapp.model.data.Response
 
     @POST("/setUserImage/{userId}")
     suspend fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
@@ -61,32 +61,41 @@ interface IRetrofitApi {
     suspend fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
 
     @POST("/deleteUser/{userId}")
-    suspend fun deleteUser(@Body userId: Int): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun deleteUser(@Body userId: Int, @Header("Authorization") authToken: String): Response<Unit>
 
     //list
     @GET("/getLists/{ownerId}")
-    suspend fun getLists(@Path("ownerId") ownerId: Int): Call<List<com.miaekebom.mynotesapp.model.data.List>>
+    @Headers("Content-Type: application/json")
+    suspend fun getLists(@Path("ownerId") ownerId: Int, @Header("Authorization") authToken: String): Response<List<com.miaekebom.mynotesapp.model.data.List>>
 
-    @POST("/saveList/{ownerId}")
-    suspend fun saveList(@Path("ownerId") ownerId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
+    @POST("/saveList")
+    @Headers("Content-Type: application/json")
+    suspend fun saveList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.Response
 
     @POST("/deleteList/{listId}")
-    suspend fun deleteList(@Path("listId") listId: Int): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun deleteList(@Path("listId") listId: Int, @Header("Authorization") authToken: String): Response<Unit>
 
     @POST("/updateListName/{listId}")
-    suspend fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): Response<Unit>
 
     //note
     @POST("/saveNote/{ownerId}")
-    suspend fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note, @Header("Authorization") authToken: String): Response<Unit>
 
     @POST("/deleteNote/{noteId}")
-    suspend fun deleteNote(@Path("noteId") noteId: Int): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun deleteNote(@Path("noteId") noteId: Int, @Header("Authorization") authToken: String): Response<Unit>
 
     @POST("/updateNote/{noteId}")
-    suspend fun updateNote(@Path("noteId") noteId: Int, @Body note: Note): Call<Unit>
+    @Headers("Content-Type: application/json")
+    suspend fun updateNote(@Path("noteId") noteId: Int, @Body note: Note, @Header("Authorization") authToken: String): Response<Unit>
 
     @GET("/getNotes/{ownerId}")
-    suspend fun getNotes(@Path("ownerId") ownerId: Int): Call<List<Note>>
+    @Headers("Content-Type: application/json")
+    suspend fun getNotes(@Path("ownerId") ownerId: Int, @Header("Authorization") authToken: String): Response<List<Note>>
 
 }

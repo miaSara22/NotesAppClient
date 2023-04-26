@@ -10,11 +10,11 @@ import com.miaekebom.mynotesapp.model.data.List
 interface ListDao {
 
     @Insert
-    suspend fun insertList(list: List)
+    fun insertList(list: List)
 
     @Delete
-    suspend fun deleteList(list: List)
+    fun deleteList(list: List)
 
     @Update
-    suspend fun updateList(list: List)
+    fun updateList(list: List)
 }

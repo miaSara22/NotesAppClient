@@ -11,20 +11,19 @@ import retrofit2.http.Path
 
 interface IServerManager {
 
-    fun addNewUser(user: User)
+    suspend fun addNewUser(user: User)
     suspend fun loginUser(loginRequest: LoginRequest)
-    fun setUserImage(userId: Int, image: String): Call<ResponseBody>
-    fun deleteUserImage(userId: Int): Call<ResponseBody>
-    fun deleteUser(user: User)
+    suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody>
+    suspend fun deleteUserImage(userId: Int): Call<ResponseBody>
+    suspend fun deleteUser(user: User)
 
-    fun addNote(listId: Int, note: Note)
-    fun deleteNote(note: Note)
-    fun getAllListNotes(listId: Int)
-    fun updateNote(noteId: Int, note: Note)
+    suspend fun addNote(listId: Int, note: Note)
+    suspend fun deleteNote(note: Note)
+    suspend fun getListNotes(): kotlin.collections.List<Note>
+    suspend fun updateNote(note: Note)
 
-    fun addList(ownerId: Int, list: List)
-    fun deleteList(list: List)
-    fun updateList(listId: Int, list: List)
-    fun getUserLists(ownerId: Int): Call<kotlin.collections.List<List>>
-
+    suspend fun deleteList(list: List)
+    suspend fun updateList(list: List)
+    suspend fun getUserLists(): kotlin.collections.List<List>
+    suspend fun addList(list: List)
 }

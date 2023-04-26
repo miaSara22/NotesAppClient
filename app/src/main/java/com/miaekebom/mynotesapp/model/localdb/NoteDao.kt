@@ -11,11 +11,11 @@ import com.miaekebom.mynotesapp.model.data.Note
 interface NoteDao {
 
     @Insert
-    suspend fun insertNote(note: Note)
+    fun insertNote(note: Note)
 
     @Delete
-    suspend fun deleteNote(note: Note)
+    fun deleteNote(note: Note)
 
     @Update
-    suspend fun updateNote(note: Note)
+    fun updateNote(note: Note)
 }

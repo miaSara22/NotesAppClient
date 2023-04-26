@@ -11,19 +11,15 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.ActivityMainBinding
-import com.miaekebom.mynotesapp.model.utils.DialogsManager.displayAboutPage
-import com.miaekebom.mynotesapp.model.utils.DialogsManager.displayChooseImageDialog
-import com.miaekebom.mynotesapp.model.utils.DialogsManager.displayCreateListDialog
-import com.miaekebom.mynotesapp.model.utils.DialogsManager.displayEditNameDialog
-import com.miaekebom.mynotesapp.model.utils.SharedPref
+import com.miaekebom.mynotesapp.view.DialogsManager.displayAboutPage
+import com.miaekebom.mynotesapp.view.DialogsManager.displayChooseImageDialog
+import com.miaekebom.mynotesapp.view.DialogsManager.displayCreateListDialog
+import com.miaekebom.mynotesapp.view.DialogsManager.displayEditListNameDialog
 import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 import java.util.logging.Level
 import java.util.logging.Logger
 
@@ -41,38 +37,21 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.TVUserName.text = intent.getStringExtra("username")
+        //val userId = intent.getStringExtra("userId")
         onUserImageClick()
         onAddListClick()
         loadLists()
     }
 
-    private fun onUserImageClick() {
-        binding.IBUserProfile.setOnClickListener {
-            displayChooseImageDialog(this)
-        }
-    }
-
-    private fun onAddListClick() {
-        binding.IBCreateList.setOnClickListener {
-            displayCreateListDialog(this, mainViewModel)
-        }
-    }
-
-    private fun loadLists(){
-        mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-            mainViewModel.getAllUserLists(SharedPref.getInstance(this@MainActivity).getUser().id).enqueue(object :Callback<List<com.miaekebom.mynotesapp.model.data.List>>{
-                override fun onResponse(
-                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>,
-                    response: Response<List<com.miaekebom.mynotesapp.model.data.List>>) {
-                    response.body().let {
-                        it?.let {
-                            loadedLists = it
-                            createRecyclerView(it)
-                        }
-                    }
-                }
-                override fun onFailure(
-                    call: Call<List<com.miaekebom.mynotesapp.model.data.List>>, t: Throwable) { error(t) } })
+    private fun loadLists() {
+        mainViewModel.viewModelScope.launch {
+            try {
+                val lists = mainViewModel.getUserLists()
+                createRecyclerView(lists)
+                loadedLists = lists
+            } catch (t: Throwable) {
+                error(t)
+            }
         }
     }
 
@@ -88,7 +67,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onListTitleClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit = {
-        displayNotesActivity(it.title)
+        displayNotesActivity(it.title, it.id)
     }
 
     private fun onListRemoveClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit =  {
@@ -98,7 +77,19 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onListEditNameClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit = {
-        displayEditNameDialog(this, mainViewModel, it)
+        displayEditListNameDialog(this, mainViewModel, it)
+    }
+
+    private fun onUserImageClick() {
+        binding.IBUserProfile.setOnClickListener {
+            displayChooseImageDialog(this)
+        }
+    }
+
+    private fun onAddListClick() {
+        binding.IBCreateList.setOnClickListener {
+            displayCreateListDialog(this, mainViewModel)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
@@ -141,17 +132,18 @@ class MainActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun displayNotesActivity(listName: String){
+    private fun displayNotesActivity(listName: String, listId: Int){
         runOnUiThread {
             val intent = Intent(this, NotesActivity::class.java)
             intent.putExtra("listName",listName)
+            intent.putExtra("listId", listId)
             startActivity(intent) }
     }
 
     private fun displayToast(text: String){
         Toast.makeText(this, text, Toast.LENGTH_LONG).show() }
 
-    fun error(t: Throwable){
+    private fun error(t: Throwable){
         Logger.getLogger(MainActivity::class.java.name).log(Level.SEVERE, "Error occurred", t)
         displayToast("An error occurred. Please try again later") }
 }

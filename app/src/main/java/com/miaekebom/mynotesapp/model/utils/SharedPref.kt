@@ -3,14 +3,16 @@ package com.miaekebom.mynotesapp.model.utils
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity
 import com.miaekebom.mynotesapp.R
+import com.miaekebom.mynotesapp.model.data.Role
 import com.miaekebom.mynotesapp.model.data.User
 
-const val fullName = "FULL_NAME"
-const val email = "EMAIL"
-const val id = "ID"
-const val token = "TOKEN"
+const val fullName = "USER_FULL_NAME"
+const val email = "USER_EMAIL"
+const val id = "USER_ID"
+const val token = "USER_TOKEN"
 const val noteTimestamp = "NOTE_TIMESTAMP"
 const val listTimeStamp = "LIST_TIMESTAMP"
+const val listId = "LIST_ID"
 
 class SharedPref private constructor(context: Context) {
 
@@ -38,7 +40,7 @@ class SharedPref private constructor(context: Context) {
         val id = sharePref.getInt(id, 0)
         val email = sharePref.getString(email, "")
         val fullName = sharePref.getString(fullName, "")
-        return User( id ,email.toString(), fullName.toString(), "", "", "") }
+        return User( id ,email.toString(), fullName.toString(),Role.USER, "", "", "") }
 
     fun setUserToken(jwtToken: String){
         sharePref.edit()
@@ -63,4 +65,14 @@ class SharedPref private constructor(context: Context) {
 
     fun getListTimestamp(): Long {
         return sharePref.getLong(listTimeStamp, -1) }
+
+    fun setListId(id: Int){
+        sharePref.edit()
+            .putInt(listId, id)
+            .apply()
+    }
+
+    fun getListId(): Int{
+        return sharePref.getInt(listId, 0)
+    }
 }

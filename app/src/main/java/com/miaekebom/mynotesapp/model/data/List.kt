@@ -7,10 +7,9 @@ import androidx.room.PrimaryKey
 data class List(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Int,
     var ownerId: Int,
-    var title: String,
-    var createdAt: Long = System.currentTimeMillis())
+    var title: String)
 
-{ constructor(): this(0,0,"", System.currentTimeMillis())}
+{ constructor(): this(0,0,"")}
 

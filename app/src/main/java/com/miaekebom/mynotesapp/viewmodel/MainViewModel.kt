@@ -11,27 +11,27 @@ import javax.inject.Inject
 @HiltViewModel
 class MainViewModel @Inject constructor(private val repository: IRepository): ViewModel(){
 
-    fun addList(ownerId: Int, list: com.miaekebom.mynotesapp.model.data.List) {
-        return repository.addList(ownerId, list)
+    suspend fun addList(list: com.miaekebom.mynotesapp.model.data.List) {
+        return repository.addList(list)
     }
 
-    fun deleteList(list: List) {
+    suspend fun deleteList(list: List) {
         return repository.deleteList(list)
     }
 
-    fun updateList(listId: Int, list: com.miaekebom.mynotesapp.model.data.List) {
-        return repository.updateList(listId, list)
+    suspend fun updateList(list: com.miaekebom.mynotesapp.model.data.List) {
+        return repository.updateList(list)
     }
 
-    fun getAllUserLists(ownerId: Int): Call<kotlin.collections.List<List>> {
-        return repository.getUserLists(ownerId)
+    suspend fun getUserLists(): kotlin.collections.List<List> {
+        return repository.getUserLists()
     }
 
-    fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
+    suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
         return repository.setUserImage(userId, image)
     }
 
-    fun deleteUserImage(userId: Int): Call<ResponseBody> {
+    suspend fun deleteUserImage(userId: Int): Call<ResponseBody> {
         return repository.deleteUserImage(userId)
     }
 

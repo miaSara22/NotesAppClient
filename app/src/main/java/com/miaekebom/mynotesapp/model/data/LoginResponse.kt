@@ -7,5 +7,5 @@ data class LoginResponse(
     @SerializedName("message") var message: String,
     @SerializedName("token") val token: String,
     @SerializedName("id") var id: Int,
-    @SerializedName("email") val email: String,
-    @SerializedName("fullName") val fullName: String)
+    @SerializedName("email") var email: String,
+    @SerializedName("fullName") var fullName: String)

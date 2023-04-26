@@ -13,7 +13,7 @@ class Repository@Inject constructor(
     private val serverManager: IServerManager
 ): IRepository {
 
-    override fun addNewUser(user: User) {
+    override suspend fun addNewUser(user: User) {
         return serverManager.addNewUser(user)
     }
 
@@ -21,47 +21,47 @@ class Repository@Inject constructor(
         return serverManager.loginUser(loginRequest)
     }
 
-    override fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
+    override suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
         return serverManager.setUserImage(userId, image)
     }
 
-    override fun deleteUserImage(userId: Int): Call<ResponseBody> {
+    override suspend fun deleteUserImage(userId: Int): Call<ResponseBody> {
         return serverManager.deleteUserImage(userId)
     }
 
-    override fun deleteUser(user: User) {
+    override suspend fun deleteUser(user: User) {
         serverManager.deleteUser(user)
     }
 
-    override fun addNote(listId: Int, note: Note) {
+    override suspend fun addNote(listId: Int, note: Note) {
         serverManager.addNote(listId, note)
     }
 
-    override fun deleteNote(note: Note) {
+    override suspend fun deleteNote(note: Note) {
         serverManager.deleteNote(note)
     }
 
-    override fun updateNote(noteId: Int, note: Note) {
-        serverManager.updateNote(noteId, note)
+    override suspend fun updateNote(note: Note) {
+        serverManager.updateNote(note)
     }
 
-    override fun getAllNotes(listId: Int) {
-        serverManager.getAllListNotes(listId)
+    override suspend fun getListNotes(): kotlin.collections.List<Note> {
+        return serverManager.getListNotes()
     }
 
-    override fun addList(ownerId: Int, list: List) {
-        return serverManager.addList(ownerId, list)
+    override suspend fun addList(list: List) {
+        return serverManager.addList(list)
     }
 
-    override fun deleteList(list: List) {
+    override suspend fun deleteList(list: List) {
         return serverManager.deleteList(list)
     }
 
-    override fun updateList(listId: Int, list: List) {
-        return serverManager.updateList(listId, list)
+    override suspend fun updateList(list: List) {
+        return serverManager.updateList(list)
     }
 
-    override fun getUserLists(ownerId: Int): Call<kotlin.collections.List<List>> {
-        return serverManager.getUserLists(ownerId)
+    override suspend fun getUserLists(): kotlin.collections.List<List> {
+        return serverManager.getUserLists()
     }
 }

@@ -7,9 +7,10 @@ import androidx.room.PrimaryKey
 data class Note(
 
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    var id: Int,
     var ownerId: Int,
     var title: String,
-    var description: String,
-    var createdAt: Long = System.currentTimeMillis())
+    var description: String)
+
+{constructor(): this(0,0,"","")}
 

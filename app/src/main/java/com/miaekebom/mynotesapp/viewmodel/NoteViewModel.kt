@@ -9,20 +9,20 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(private val repository: IRepository): ViewModel(){
 
-    fun addNote(listId: Int, note: Note){
+    suspend fun addNote(listId: Int, note: Note){
         repository.addNote(listId, note)
     }
 
-    fun deleteNote(note: Note){
+    suspend fun deleteNote(note: Note){
         repository.deleteNote(note)
     }
 
-    fun updateNote(noteId: Int, note: Note){
-        repository.updateNote(noteId,note)
+    suspend fun updateNote(note: Note){
+        repository.updateNote(note)
     }
 
-    fun getAllNotes(listId: Int){
-        repository.getAllNotes(listId)
+    suspend fun getListNotes(): List<Note>{
+        return repository.getListNotes()
     }
 
     fun listenToNoteChanges(){}

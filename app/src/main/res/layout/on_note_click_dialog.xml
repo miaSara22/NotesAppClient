@@ -11,29 +11,41 @@
     android:orientation="vertical"
     app:cardMaxElevation="10dp"
     android:padding="5dp"
-    android:id="@+id/LL_note_dec">
+    android:id="@+id/LL_note_desc">
 
-<!--        <com.google.android.material.textfield.TextInputEditText-->
-<!--            android:id="@+id/ET_note_des_dialog"-->
-<!--            android:layout_gravity="center|top"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:text="@string/note_description"-->
-<!--            android:textSize="20sp"-->
-<!--            android:inputType="Text"/>-->
-
-        <Button
-            android:id="@+id/B_note_dec_save_changes"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
+        <TextView
+            android:id="@+id/TV_note_dec"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/save_changes"/>
+            android:background="#ffffff"
+            android:text="@string/note_description"
+            android:textColor="#000000"
+            android:gravity="center"
+            android:textSize="16sp"
+            />
 
-        <Button
-            android:id="@+id/B_note_dec_cancel_changes"
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/cancel_changes"/>
+            android:gravity="center">
+
+                <Button
+                    android:id="@+id/B_note_desc_edit"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/edit"/>
+
+                <Button
+                    android:id="@+id/B_note_desc_delete"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/delete"/>
+
+        </LinearLayout>
 
 </LinearLayout>

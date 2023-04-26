@@ -9,9 +9,9 @@ import com.miaekebom.mynotesapp.model.data.User
 interface UserDao {
 
     @Insert
-    suspend fun insertUser(user: User)
+    fun insertUser(user: User)
 
     @Delete
-    suspend fun deleteUser(user: User)
+    fun deleteUser(user: User)
 
 }

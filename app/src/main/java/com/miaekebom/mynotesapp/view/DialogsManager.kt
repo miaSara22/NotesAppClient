@@ -1,15 +1,18 @@
-package com.miaekebom.mynotesapp.model.utils
+package com.miaekebom.mynotesapp.view
 
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
 import android.widget.Toast
-import androidx.compose.runtime.saveable.autoSaver
 import androidx.lifecycle.viewModelScope
 import com.miaekebom.mynotesapp.databinding.*
 import com.miaekebom.mynotesapp.model.data.LoginRequest
+import com.miaekebom.mynotesapp.model.data.Note
+import com.miaekebom.mynotesapp.model.data.Role
 import com.miaekebom.mynotesapp.model.data.User
+import com.miaekebom.mynotesapp.model.utils.SharedPref
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
+import com.miaekebom.mynotesapp.viewmodel.NoteViewModel
 import com.miaekebom.mynotesapp.viewmodel.RegistrationViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -28,7 +31,7 @@ object DialogsManager {
             val pass1 = binding.ETPasswordRegister1.text.toString()
             val pass2 = binding.ETPasswordRegister2.text.toString()
 
-            val user = User(2, email, fullName, null, pass1, pass2)
+            val user = User(0, email, fullName,Role.USER, null, pass1, pass2)
 
             if (user.email.isNotEmpty() &&
                 user.fullName.isNotEmpty() &&
@@ -70,7 +73,7 @@ object DialogsManager {
         dialog.show()
     }
 
-    fun displayEditNameDialog(context: Context, mainViewModel: MainViewModel, list: com.miaekebom.mynotesapp.model.data.List) {
+    fun displayEditListNameDialog(context: Context, mainViewModel: MainViewModel, list: com.miaekebom.mynotesapp.model.data.List) {
         val binding = EditTextDialogBinding.inflate(LayoutInflater.from(context))
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
@@ -81,15 +84,38 @@ object DialogsManager {
         binding.apply {
             BSaveChanges.setOnClickListener {
 
-                ETNewListName.setText(list.title)
+                ETNewName.setText(list.title)
                 BSaveChanges.setOnClickListener {
                     val updatedList = com.miaekebom.mynotesapp.model.data.List(
                         list.id,
                         list.ownerId,
-                        ETNewListName.text.toString()
+                        ETNewName.text.toString()
                     )
                     mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-                        mainViewModel.updateList(list.id, updatedList)
+                        mainViewModel.updateList(updatedList)
+                    }
+                }
+                BCancelChanges.setOnClickListener { dialog.dismiss() }
+            }
+        }
+    }
+
+    fun displayEditNoteNameDialog(context: Context, notesViewModel: NoteViewModel, note: Note) {
+        val binding = EditTextDialogBinding.inflate(LayoutInflater.from(context))
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+
+        binding.apply {
+            BSaveChanges.setOnClickListener {
+
+                ETNewName.setText(note.title)
+                BSaveChanges.setOnClickListener {
+                    val updatedNote = Note(note.id, note.ownerId, ETNewName.text.toString(), note.description)
+                    notesViewModel.viewModelScope.launch(Dispatchers.IO) {
+                        notesViewModel.updateNote(updatedNote)
                     }
                 }
                 BCancelChanges.setOnClickListener { dialog.dismiss() }
@@ -106,15 +132,30 @@ object DialogsManager {
         dialog.show()
 
         binding.apply {
-            val listName = listNameDialogET.text
-
             addListDialogB.setOnClickListener {
+                val listName = listNameDialogET.text
                 val list = com.miaekebom.mynotesapp.model.data.List(0, SharedPref.getInstance(context).getUser().id, listName.toString())
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-                    mainViewModel.addList(list.ownerId, list)}
+                    mainViewModel.addList(list)}
                 dialog.dismiss()
             }
         }
+    }
+
+    fun displayNoteDescDialog(context: Context, notesViewModel: NoteViewModel, noteDesc: String) {
+        val binding = OnNoteClickDialogBinding.inflate(LayoutInflater.from(context))
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+
+        binding.apply {
+            TVNoteDec.text = noteDesc
+            BNoteDescDelete.setOnClickListener {  }
+            BNoteDescEdit.setOnClickListener {  }
+        }
+        dialog.dismiss()
     }
 
     fun displayAboutPage(context: Context) {
