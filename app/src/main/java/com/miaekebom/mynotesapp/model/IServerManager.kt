@@ -23,6 +23,7 @@ interface IServerManager {
     suspend fun deleteNote(note: Note)
     suspend fun getListNotes(): kotlin.collections.List<Note>
     suspend fun updateNote(note: Note)
+    fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>>
 
     suspend fun deleteList(list: List)
     suspend fun updateList(list: List)

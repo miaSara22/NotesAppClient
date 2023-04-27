@@ -78,7 +78,7 @@ class MyServer @Inject constructor(
 
     override suspend fun deleteUser(user: User) = withContext(Dispatchers.IO) {
         try {
-            val response = api.deleteUser(user.id, authToken)
+            val response = api.deleteUser(user, authToken)
             if (response.isSuccessful) {
                 userDao.deleteUser(user)
                 withContext(Dispatchers.Main) { displayToast(response.message()) }
@@ -95,8 +95,7 @@ class MyServer @Inject constructor(
         try {
             val response = api.saveList(list, authToken)
             if (response.success) {
-                val id = listDao.insertList(list)
-                Log.d("ListInserted", "List with ID $id inserted successfully")
+                listDao.insertList(list)
                 sharedPref.setListTimestamp()
                 withContext(Dispatchers.Main) {
                     displayToast(response.message)
@@ -110,6 +109,8 @@ class MyServer @Inject constructor(
     }
 
     override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getAllLists()
+
+    override fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>> = noteDao.getAllNotes()
 
     override suspend fun deleteList(list: List) = withContext(Dispatchers.IO) {
         try {
@@ -163,15 +164,15 @@ class MyServer @Inject constructor(
 
     override suspend fun addNote(note: Note) = withContext(Dispatchers.IO) {
         try {
-            val response = api.saveNote(note.ownerId, note, authToken)
+            val response = api.saveNote(note, authToken)
 
-            if (response.isSuccessful) {
+            if (response.success) {
                 noteDao.insertNote(note)
                 sharedPref.setNoteTimestamp()
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
 
             } else {
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             }
 
         } catch (e: Exception) {
@@ -181,12 +182,12 @@ class MyServer @Inject constructor(
 
     override suspend fun deleteNote(note: Note) = withContext(Dispatchers.IO) {
         try {
-            val response = api.deleteNote(note.id, authToken)
-            if (response.isSuccessful) {
+            val response = api.deleteNote(note, authToken)
+            if (response.success) {
                 noteDao.deleteNote(note)
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             } else {
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             }
         } catch (e: Exception) {
             error(e)
@@ -195,12 +196,12 @@ class MyServer @Inject constructor(
 
     override suspend fun updateNote(note: Note) = withContext(Dispatchers.IO) {
         try {
-            val response = api.updateNote(note.id, note, authToken)
-            if (response.isSuccessful) {
+            val response = api.updateNote(note, authToken)
+            if (response.success) {
                 noteDao.updateNote(note)
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             } else {
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             }
         } catch (e: Exception) {
             error(e)

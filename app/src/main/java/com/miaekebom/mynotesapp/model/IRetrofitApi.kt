@@ -71,11 +71,11 @@ interface IRetrofitApi {
 
     @POST("/saveList")
     @Headers("Content-Type: application/json")
-    suspend fun saveList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.ResultResponse
+    suspend fun saveList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): ResultResponse
 
     @POST("/deleteList")
     @Headers("Content-Type: application/json")
-    suspend fun deleteList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.ResultResponse
+    suspend fun deleteList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): ResultResponse
 
     @POST("/updateList")
     @Headers("Content-Type: application/json")

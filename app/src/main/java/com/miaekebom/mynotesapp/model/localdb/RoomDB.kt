@@ -24,6 +24,9 @@ abstract class RoomDB: RoomDatabase() {
             ).fallbackToDestructiveMigration().build()
         }
     }
+
+
+
 }
 
 //package eu.tutorials.roomdemo

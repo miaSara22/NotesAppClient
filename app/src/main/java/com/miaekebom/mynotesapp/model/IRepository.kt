@@ -20,6 +20,7 @@ interface IRepository {
     suspend fun deleteNote(note: Note)
     suspend fun updateNote(note: Note)
     suspend fun getListNotes(): kotlin.collections.List<Note>
+    fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>>
 
     suspend fun addList(list: List)
     suspend fun deleteList(list: List)

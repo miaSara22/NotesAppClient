@@ -10,6 +10,7 @@ import com.miaekebom.mynotesapp.model.data.Note
 import com.miaekebom.mynotesapp.model.utils.SharedPref
 import com.miaekebom.mynotesapp.view.DialogsManager.displayEditNoteNameDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayNoteDescDialog
+import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.view.adapters.NoteAdapter
 import com.miaekebom.mynotesapp.viewmodel.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
@@ -67,13 +68,18 @@ class NotesActivity : AppCompatActivity() {
 
     private fun createRecyclerView(list: List<Note>){
         val recyclerView: RecyclerView = binding.RVNotes
-        noteAdapter = NoteAdapter(
-            list.toMutableList(),
-            onNoteTitleClick(),
-            onNoteRemoveClick(),
-            onNoteEditNameClick()
-        )
-        recyclerView.adapter = noteAdapter
+        noteViewModel.notesLive.observe(this) { notes ->
+            noteAdapter = NoteAdapter(
+                notes.toMutableList(),
+                onNoteTitleClick(),
+                onNoteRemoveClick(),
+                onNoteEditNameClick()
+            )
+            recyclerView.adapter = noteAdapter
+            noteAdapter.updateChanges(notes)
+            loadedNotes = notes
+        }
+
     }
 
     private fun onNoteTitleClick(): (Note) -> Unit = {

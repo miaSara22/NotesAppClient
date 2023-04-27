@@ -70,4 +70,8 @@ class Repository@Inject constructor(
     override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> {
         return serverManager.listenToListsChanges()
     }
+
+    override fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>> {
+        return serverManager.listenToNotesChanges()
+    }
 }

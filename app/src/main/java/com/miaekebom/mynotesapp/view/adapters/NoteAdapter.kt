@@ -4,10 +4,11 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.databinding.RowNoteItemBinding
+import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.data.Note
 
 class NoteAdapter(
-    private val dataList: MutableList<Note>,
+    private var dataList: MutableList<Note>,
     private val onNoteTitleClick: (Note) -> Unit,
     private val onNoteRemoveClick: (Note) -> Unit,
     private val onNoteEditNameClick: (Note) -> Unit
@@ -31,6 +32,11 @@ class NoteAdapter(
         fun bind(note: Note) {
             binding.TVNoteName.text = note.title
         }
+    }
+
+    fun updateChanges(notes: kotlin.collections.List<Note>) {
+        dataList = notes.toMutableList()
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
