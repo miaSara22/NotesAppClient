@@ -9,10 +9,8 @@ import android.widget.Toast
 import androidx.activity.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
-import androidx.room.Room
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.ActivityMainBinding
-import com.miaekebom.mynotesapp.model.localdb.RoomDB
 import com.miaekebom.mynotesapp.view.DialogsManager.displayAboutPage
 import com.miaekebom.mynotesapp.view.DialogsManager.displayChooseImageDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayCreateListDialog
@@ -52,7 +50,6 @@ class MainActivity : AppCompatActivity() {
                 onListEditNameClick()
             )
             recyclerView.adapter = listAdapter
-            listAdapter.updateChanges(lists)
             loadedLists = lists
         }
     }

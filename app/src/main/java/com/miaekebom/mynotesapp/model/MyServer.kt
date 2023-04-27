@@ -117,6 +117,7 @@ class MyServer @Inject constructor(
             val response = api.deleteList(list, authToken)
             if (response.success) {
                 listDao.deleteList(list)
+                noteDao.deleteNotes(list.id)
                 withContext(Dispatchers.Main) {
                     displayToast(response.message)
                 }
@@ -211,8 +212,9 @@ class MyServer @Inject constructor(
     override suspend fun getListNotes(): kotlin.collections.List<Note> {
         return try {
             withContext(Dispatchers.IO) {
-                val listId = sharedPref.getListId()
-                val response = api.getNotes(listId, authToken)
+                val ownerId = sharedPref.getListId()
+                withContext(Dispatchers.Main) { displayToast("Current owner id is: $ownerId") }
+                val response = api.getNotes(ownerId, authToken)
                 if (response.isSuccessful) {
                     response.body() ?: emptyList()
                 } else {

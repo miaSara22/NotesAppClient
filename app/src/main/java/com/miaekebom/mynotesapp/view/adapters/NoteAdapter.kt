@@ -34,11 +34,6 @@ class NoteAdapter(
         }
     }
 
-    fun updateChanges(notes: kotlin.collections.List<Note>) {
-        dataList = notes.toMutableList()
-        notifyDataSetChanged()
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NoteViewHolder {
         val binding = RowNoteItemBinding.inflate(
             LayoutInflater.from(parent.context),

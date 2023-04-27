@@ -43,11 +43,6 @@ class ListAdapter(
 
     override fun getItemCount(): Int = dataList.size
 
-    fun updateChanges(lists: kotlin.collections.List<List>) {
-        dataList = lists.toMutableList()
-        notifyDataSetChanged()
-    }
-
     fun searchItem(result: ArrayList<List>) {
         dataList = result
         notifyDataSetChanged()

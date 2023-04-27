@@ -7,7 +7,7 @@ import com.miaekebom.mynotesapp.model.data.Note
 import com.miaekebom.mynotesapp.model.data.User
 import com.miaekebom.mynotesapp.model.utils.Converter
 
-@Database(entities = [List::class, User::class, Note::class], version = 4)
+@Database(entities = [List::class, User::class, Note::class], version = 5)
 @TypeConverters(Converter::class)
 abstract class RoomDB: RoomDatabase() {
 

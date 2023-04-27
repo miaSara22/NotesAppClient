@@ -19,4 +19,7 @@ interface NoteDao {
 
     @Query(value = "SELECT * FROM notes")
     fun getAllNotes(): LiveData<kotlin.collections.List<Note>>
+
+    @Query(value = "DELETE FROM notes WHERE ownerId = :ownerId")
+    fun deleteNotes(ownerId: Int)
 }
