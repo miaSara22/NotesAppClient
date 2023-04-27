@@ -52,7 +52,7 @@ interface IRetrofitApi {
 
     @POST("/saveUser")
     @Headers("Content-Type: application/json")
-    suspend fun saveUser(@Body user: User, @Header("Authorization") authToken: String? = null): com.miaekebom.mynotesapp.model.data.Response
+    suspend fun saveUser(@Body user: User, @Header("Authorization") authToken: String? = null): com.miaekebom.mynotesapp.model.data.ResultResponse
 
     @POST("/setUserImage/{userId}")
     suspend fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
@@ -60,9 +60,9 @@ interface IRetrofitApi {
     @POST("/deleteUserImage/{userId}")
     suspend fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
 
-    @POST("/deleteUser/{userId}")
+    @POST("/deleteUser")
     @Headers("Content-Type: application/json")
-    suspend fun deleteUser(@Body userId: Int, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun deleteUser(@Body user: User, @Header("Authorization") authToken: String): Response<Unit>
 
     //list
     @GET("/getLists/{ownerId}")
@@ -71,28 +71,28 @@ interface IRetrofitApi {
 
     @POST("/saveList")
     @Headers("Content-Type: application/json")
-    suspend fun saveList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.Response
+    suspend fun saveList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.ResultResponse
 
-    @POST("/deleteList/{listId}")
+    @POST("/deleteList")
     @Headers("Content-Type: application/json")
-    suspend fun deleteList(@Path("listId") listId: Int, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun deleteList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): com.miaekebom.mynotesapp.model.data.ResultResponse
 
-    @POST("/updateListName/{listId}")
+    @POST("/updateList")
     @Headers("Content-Type: application/json")
-    suspend fun updateList(@Path("listId") listId: Int, @Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun updateList(@Body list: com.miaekebom.mynotesapp.model.data.List, @Header("Authorization") authToken: String): Response<Unit>
 
     //note
-    @POST("/saveNote/{ownerId}")
+    @POST("/saveNote")
     @Headers("Content-Type: application/json")
-    suspend fun saveNote(@Path("ownerId") ownerId: Int, @Body note: Note, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun saveNote(@Body note: Note, @Header("Authorization") authToken: String): ResultResponse
 
-    @POST("/deleteNote/{noteId}")
+    @POST("/deleteNote")
     @Headers("Content-Type: application/json")
-    suspend fun deleteNote(@Path("noteId") noteId: Int, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun deleteNote(@Body note: Note, @Header("Authorization") authToken: String): ResultResponse
 
-    @POST("/updateNote/{noteId}")
+    @POST("/updateNote")
     @Headers("Content-Type: application/json")
-    suspend fun updateNote(@Path("noteId") noteId: Int, @Body note: Note, @Header("Authorization") authToken: String): Response<Unit>
+    suspend fun updateNote(@Body note: Note, @Header("Authorization") authToken: String): ResultResponse
 
     @GET("/getNotes/{ownerId}")
     @Headers("Content-Type: application/json")

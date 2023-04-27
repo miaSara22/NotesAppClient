@@ -2,7 +2,11 @@ package com.miaekebom.mynotesapp.model
 
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import android.widget.Toast
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.localdb.RoomDB
@@ -31,10 +35,8 @@ class MyServer @Inject constructor(
         try {
             val response = api.saveUser(user)
             if (response.success) {
-                withContext(Dispatchers.Main) {
-                    displayToast(response.message)
-                    userDao.insertUser(user)
-                }
+                userDao.insertUser(user)
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             } else {
                 withContext(Dispatchers.Main) { displayToast(response.message) }
             }
@@ -93,7 +95,8 @@ class MyServer @Inject constructor(
         try {
             val response = api.saveList(list, authToken)
             if (response.success) {
-                listDao.insertList(list)
+                val id = listDao.insertList(list)
+                Log.d("ListInserted", "List with ID $id inserted successfully")
                 sharedPref.setListTimestamp()
                 withContext(Dispatchers.Main) {
                     displayToast(response.message)
@@ -106,16 +109,18 @@ class MyServer @Inject constructor(
         }
     }
 
+    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getAllLists()
+
     override suspend fun deleteList(list: List) = withContext(Dispatchers.IO) {
         try {
-            val response = api.deleteList(list.id, authToken)
-            if (response.isSuccessful) {
+            val response = api.deleteList(list, authToken)
+            if (response.success) {
                 listDao.deleteList(list)
                 withContext(Dispatchers.Main) {
-                    displayToast(response.message())
+                    displayToast(response.message)
                 }
             } else {
-                withContext(Dispatchers.Main) { displayToast(response.message()) }
+                withContext(Dispatchers.Main) { displayToast(response.message) }
             }
 
         } catch (e: Exception) {
@@ -125,7 +130,7 @@ class MyServer @Inject constructor(
 
     override suspend fun updateList(list: List) = withContext(Dispatchers.IO) {
         try {
-            val response = api.updateList(list.id, list, authToken)
+            val response = api.updateList(list, authToken)
             if (response.isSuccessful) {
                 listDao.updateList(list)
                 withContext(Dispatchers.Main) { displayToast(response.message()) }
@@ -156,9 +161,10 @@ class MyServer @Inject constructor(
         }
     }
 
-    override suspend fun addNote(listId: Int, note: Note) = withContext(Dispatchers.IO) {
+    override suspend fun addNote(note: Note) = withContext(Dispatchers.IO) {
         try {
-            val response = api.saveNote(listId, note, authToken)
+            val response = api.saveNote(note.ownerId, note, authToken)
+
             if (response.isSuccessful) {
                 noteDao.insertNote(note)
                 sharedPref.setNoteTimestamp()

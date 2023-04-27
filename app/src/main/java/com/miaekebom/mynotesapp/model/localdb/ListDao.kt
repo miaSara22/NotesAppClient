@@ -1,9 +1,7 @@
 package com.miaekebom.mynotesapp.model.localdb
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Update
+import androidx.lifecycle.LiveData
+import androidx.room.*
 import com.miaekebom.mynotesapp.model.data.List
 
 @Dao
@@ -17,4 +15,7 @@ interface ListDao {
 
     @Update
     fun updateList(list: List)
+
+    @Query(value = "SELECT * FROM lists")
+    fun getAllLists(): LiveData<kotlin.collections.List<List>>
 }

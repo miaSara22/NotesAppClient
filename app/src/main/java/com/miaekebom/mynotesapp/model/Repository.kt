@@ -1,6 +1,8 @@
 package com.miaekebom.mynotesapp.model
 
 import android.content.Context
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -33,8 +35,8 @@ class Repository@Inject constructor(
         serverManager.deleteUser(user)
     }
 
-    override suspend fun addNote(listId: Int, note: Note) {
-        serverManager.addNote(listId, note)
+    override suspend fun addNote(note: Note) {
+        serverManager.addNote(note)
     }
 
     override suspend fun deleteNote(note: Note) {
@@ -63,5 +65,9 @@ class Repository@Inject constructor(
 
     override suspend fun getUserLists(): kotlin.collections.List<List> {
         return serverManager.getUserLists()
+    }
+
+    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> {
+        return serverManager.listenToListsChanges()
     }
 }

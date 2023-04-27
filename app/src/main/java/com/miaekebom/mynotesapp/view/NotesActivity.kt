@@ -5,15 +5,12 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
-import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.ActivityNotesBinding
 import com.miaekebom.mynotesapp.model.data.Note
 import com.miaekebom.mynotesapp.model.utils.SharedPref
 import com.miaekebom.mynotesapp.view.DialogsManager.displayEditNoteNameDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayNoteDescDialog
-import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.view.adapters.NoteAdapter
-import com.miaekebom.mynotesapp.viewmodel.MainViewModel
 import com.miaekebom.mynotesapp.viewmodel.NoteViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
@@ -46,8 +43,9 @@ class NotesActivity : AppCompatActivity() {
 
             BAddNote.setOnClickListener {
                 val note = Note(0, sharedPrefs.getListId(), noteTitle.toString(), noteDesc.toString())
+                println(sharedPrefs.getListId())
                 noteViewModel.viewModelScope.launch(Dispatchers.IO) {
-                    noteViewModel.addNote(note.ownerId, note)
+                    noteViewModel.addNote(note)
                 }
             }
         }

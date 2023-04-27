@@ -20,8 +20,7 @@ import com.miaekebom.mynotesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.util.logging.Level
-import java.util.logging.Logger
+
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -37,33 +36,25 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
         binding.TVUserName.text = intent.getStringExtra("username")
-        //val userId = intent.getStringExtra("userId")
         onUserImageClick()
         onAddListClick()
-        loadLists()
+        createRecyclerView()
     }
 
-    private fun loadLists() {
-        mainViewModel.viewModelScope.launch {
-            try {
-                val lists = mainViewModel.getUserLists()
-                createRecyclerView(lists)
-                loadedLists = lists
-            } catch (t: Throwable) {
-                error(t)
-            }
-        }
-    }
-
-    private fun createRecyclerView(list: List<com.miaekebom.mynotesapp.model.data.List>){
+    private fun createRecyclerView() {
         val recyclerView: RecyclerView = binding.RVLists
-        listAdapter = ListAdapter(
-            list.toMutableList(),
-            onListTitleClick(),
-            onListRemoveClick(),
-            onListEditNameClick()
-        )
-        recyclerView.adapter = listAdapter
+        mainViewModel.listsLive.observe(this) { lists ->
+            listAdapter = ListAdapter(
+                lists.toMutableList(),
+                onListTitleClick(),
+                onListRemoveClick(),
+                onListEditNameClick()
+            )
+            recyclerView.adapter = listAdapter
+            listAdapter.notifyDataSetChanged()
+            listAdapter.updateChanges(lists)
+            loadedLists = lists
+        }
     }
 
     private fun onListTitleClick(): (com.miaekebom.mynotesapp.model.data.List) -> Unit = {
@@ -142,8 +133,4 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayToast(text: String){
         Toast.makeText(this, text, Toast.LENGTH_LONG).show() }
-
-    private fun error(t: Throwable){
-        Logger.getLogger(MainActivity::class.java.name).log(Level.SEVERE, "Error occurred", t)
-        displayToast("An error occurred. Please try again later") }
 }

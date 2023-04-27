@@ -43,20 +43,13 @@ class ListAdapter(
 
     override fun getItemCount(): Int = dataList.size
 
-    fun searchItem(result: ArrayList<List>) {
-        dataList = result
+    fun updateChanges(lists: kotlin.collections.List<List>) {
+        dataList = lists.toMutableList()
         notifyDataSetChanged()
     }
 
-    fun updateItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
-        adapter.notifyItemChanged(item.id)
-    }
-
-    fun deleteItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
-        adapter.notifyItemRemoved(item.id)
-    }
-
-    fun addItem(adapter: RecyclerView.Adapter<RecyclerView.ViewHolder>, item: List) {
-        adapter.notifyItemInserted(item.id)
+    fun searchItem(result: ArrayList<List>) {
+        dataList = result
+        notifyDataSetChanged()
     }
 }

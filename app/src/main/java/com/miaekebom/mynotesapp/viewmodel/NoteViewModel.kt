@@ -9,8 +9,8 @@ import javax.inject.Inject
 @HiltViewModel
 class NoteViewModel @Inject constructor(private val repository: IRepository): ViewModel(){
 
-    suspend fun addNote(listId: Int, note: Note){
-        repository.addNote(listId, note)
+    suspend fun addNote(note: Note){
+        repository.addNote(note)
     }
 
     suspend fun deleteNote(note: Note){

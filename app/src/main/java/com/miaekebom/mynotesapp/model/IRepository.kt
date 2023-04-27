@@ -1,5 +1,7 @@
 package com.miaekebom.mynotesapp.model
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import okhttp3.RequestBody
@@ -14,7 +16,7 @@ interface IRepository {
     suspend fun deleteUserImage(userId: Int): Call<ResponseBody>
     suspend fun deleteUser(user: User)
 
-    suspend fun addNote(listId: Int, note: Note)
+    suspend fun addNote(note: Note)
     suspend fun deleteNote(note: Note)
     suspend fun updateNote(note: Note)
     suspend fun getListNotes(): kotlin.collections.List<Note>
@@ -23,4 +25,5 @@ interface IRepository {
     suspend fun deleteList(list: List)
     suspend fun updateList(list: List)
     suspend fun getUserLists(): kotlin.collections.List<List>
+    fun listenToListsChanges(): LiveData<kotlin.collections.List<List>>
 }
