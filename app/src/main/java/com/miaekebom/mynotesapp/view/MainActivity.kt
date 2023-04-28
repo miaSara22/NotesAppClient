@@ -11,15 +11,18 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.ActivityMainBinding
+import com.miaekebom.mynotesapp.utils.ImagesManager
+import com.miaekebom.mynotesapp.utils.SharedPref
 import com.miaekebom.mynotesapp.view.DialogsManager.displayAboutPage
-import com.miaekebom.mynotesapp.view.DialogsManager.displayChooseImageDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayCreateListDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayEditListNameDialog
+import com.miaekebom.mynotesapp.view.DialogsManager.displayImageDialog
 import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -69,8 +72,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun onUserImageClick() {
-        binding.IBUserProfile.setOnClickListener {
-            displayChooseImageDialog(this)
+        val userProfile = binding.IBUserProfile
+        userProfile.setOnClickListener {
+            displayImageDialog(SharedPref.getInstance(this).getUser(),
+                this,
+                userProfile,
+                mainViewModel)
         }
     }
 
@@ -121,13 +128,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun displayNotesActivity(listName: String, listId: Int){
-        runOnUiThread {
-            val intent = Intent(this, NotesActivity::class.java)
-            intent.putExtra("listName",listName)
-            intent.putExtra("listId", listId)
-            startActivity(intent) }
+        val intent = Intent(this, NotesActivity::class.java)
+        intent.putExtra("listName",listName)
+        intent.putExtra("listId", listId)
+        startActivity(intent)
     }
 
     private fun displayToast(text: String){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show() }
+        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
+    }
 }

@@ -16,6 +16,6 @@ interface ListDao {
     @Update
     fun updateList(list: List)
 
-    @Query(value = "SELECT * FROM lists")
-    fun getAllLists(): LiveData<kotlin.collections.List<List>>
+    @Query(value = "SELECT * FROM lists WHERE ownerId = :ownerId")
+    fun getUserLists(ownerId: Int): LiveData<kotlin.collections.List<List>>
 }

@@ -1,4 +1,4 @@
-package com.miaekebom.mynotesapp.model.utils
+package com.miaekebom.mynotesapp.utils
 
 import android.content.Context
 import androidx.appcompat.app.AppCompatActivity

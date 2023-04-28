@@ -23,16 +23,16 @@ class Repository@Inject constructor(
         return serverManager.loginUser(loginRequest)
     }
 
-    override suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
-        return serverManager.setUserImage(userId, image)
-    }
-
-    override suspend fun deleteUserImage(userId: Int): Call<ResponseBody> {
-        return serverManager.deleteUserImage(userId)
-    }
-
     override suspend fun deleteUser(user: User) {
         serverManager.deleteUser(user)
+    }
+
+    override suspend fun updateUserImage(user: User, imagePath: String) {
+        serverManager.updateUserImage(user, imagePath)
+    }
+
+    override suspend fun deleteUserImage(user: User) {
+        serverManager.deleteUserImage(user)
     }
 
     override suspend fun addNote(note: Note) {

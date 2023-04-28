@@ -3,19 +3,23 @@ package com.miaekebom.mynotesapp.view
 import android.app.AlertDialog
 import android.content.Context
 import android.view.LayoutInflater
+import android.widget.ImageButton
 import android.widget.Toast
 import androidx.lifecycle.viewModelScope
+import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.*
 import com.miaekebom.mynotesapp.model.data.LoginRequest
 import com.miaekebom.mynotesapp.model.data.Note
 import com.miaekebom.mynotesapp.model.data.Role
 import com.miaekebom.mynotesapp.model.data.User
-import com.miaekebom.mynotesapp.model.utils.SharedPref
+import com.miaekebom.mynotesapp.utils.ImagesManager
+import com.miaekebom.mynotesapp.utils.SharedPref
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
 import com.miaekebom.mynotesapp.viewmodel.NoteViewModel
 import com.miaekebom.mynotesapp.viewmodel.RegistrationViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 object DialogsManager {
 
@@ -158,17 +162,8 @@ object DialogsManager {
         dialog.dismiss()
     }
 
-    fun displayAboutPage(context: Context) {
-        val binding = AboutBinding.inflate(LayoutInflater.from(context))
-        val dialog = AlertDialog.Builder(context)
-            .setView(binding.root)
-            .create()
-        dialog.setCanceledOnTouchOutside(true)
-        dialog.show()
-    }
-
-    fun displayChooseImageDialog(context: Context) {
-        val binding = ChooseImageDialogBinding.inflate(LayoutInflater.from(context))
+    fun displayImageDialog(user: User, context: Context, userProfile: ImageButton, mainViewModel: MainViewModel) {
+        val binding = ImageDialogBinding.inflate(LayoutInflater.from(context))
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
             .create()
@@ -176,10 +171,25 @@ object DialogsManager {
         dialog.show()
 
         binding.apply {
-            BImageFromGallery.setOnClickListener {}
-            BImageFromCamera.setOnClickListener {}
-            BDeleteImage.setOnClickListener {}
+            BGenerateImage.setOnClickListener {
+                ImagesManager.getImageFromApi(user, context, userProfile, mainViewModel)
+            }
+            BDeleteImage.setOnClickListener {
+                mainViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    mainViewModel.deleteUserImage(user)
+                    withContext(Dispatchers.Main){ userProfile.setImageResource(R.drawable.profile) }
+                }
+            }
         }
+    }
+
+    fun displayAboutPage(context: Context) {
+        val binding = AboutBinding.inflate(LayoutInflater.from(context))
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
     }
 
     private fun displayToast(message: String, context: Context) {

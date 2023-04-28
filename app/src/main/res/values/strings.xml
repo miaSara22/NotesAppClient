@@ -18,9 +18,8 @@
     <string name="note_description">note description</string>
     <string name="save_changes">Save changes</string>
     <string name="cancel_changes">Cancel changes</string>
-    <string name="take_a_photo">Take a photo</string>
-    <string name="choose_from_gallery">Choose from gallery</string>
-    <string name="delete_photo">Delete photo</string>
+    <string name="generate_new_image">Generate new image</string>
+    <string name="remove_image">Delete image</string>
     <string name="notes_app"><u>NotesApp</u></string>
     <string name="already_have_an_account">Already have an account?</string>
     <string name="don_t_have_an_account_yet">Don\'t have an account yet?</string>
@@ -32,10 +31,9 @@
     <string name="enter_full_name">Enter full name</string>
     <string name="re_enter_password">Re-enter password</string>
     <string name="search">Search</string>
-    <string name="logout">- Logout -</string>
-    <string name="about_us">- About Us -</string>
-    <string name="contact_us">- Contact Us -</string>
-    <string name="delete_my_account">- Delete My Account -</string>
+    <string name="logout">Logout</string>
+    <string name="about_us">About Us</string>
+    <string name="delete_my_account">Delete My Account</string>
     <string name="please_wait">Please Wait…</string>
     <string name="delete">Delete</string>
     <string name="edit">Edit</string>

@@ -2,15 +2,12 @@ package com.miaekebom.mynotesapp.model
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.localdb.RoomDB
-import com.miaekebom.mynotesapp.model.utils.SharedPref
+import com.miaekebom.mynotesapp.utils.SharedPref
 import com.miaekebom.mynotesapp.view.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
@@ -53,6 +50,7 @@ class MyServer @Inject constructor(
                 val user =
                     User(response.id, response.email, response.fullName, Role.USER, null, "", "")
                 sharedPref.setUserToken(token)
+                Logger.getLogger(MyServer::class.java.name).log(Level.INFO, "Auth token login method: $token")
                 sharedPref.setUser(user)
                 withContext(Dispatchers.Main) {
                     displayToast(response.message)
@@ -64,16 +62,6 @@ class MyServer @Inject constructor(
         } catch (e: Exception) {
             error(e)
         }
-    }
-
-    //***************************
-
-    override suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
-        return api.setUserImage(userId, image)
-    }
-
-    override suspend fun deleteUserImage(userId: Int): Call<ResponseBody> {
-        return api.deleteUserImage(userId)
     }
 
     override suspend fun deleteUser(user: User) = withContext(Dispatchers.IO) {
@@ -91,9 +79,39 @@ class MyServer @Inject constructor(
         }
     }
 
+    override suspend fun updateUserImage(user: User, imagePath: String) = withContext(Dispatchers.IO) {
+        try {
+            val response = api.updateUserImage(user.id, imagePath, authToken)
+            if (response.success) {
+                userDao.updateUserImage(imagePath, user.id)
+                withContext(Dispatchers.Main) {displayToast(response.message)}
+            } else {
+                withContext(Dispatchers.Main) {displayToast(response.message)}
+            }
+        }  catch (e: Exception) {
+            error(e)
+        }
+    }
+
+    override suspend fun deleteUserImage(user: User) = withContext(Dispatchers.IO) {
+        try {
+            val response = api.deleteUserImage(user.id, authToken)
+            if (response.success) {
+                userDao.deleteUserImage(user.id)
+                withContext(Dispatchers.Main) {displayToast(response.message)}
+            } else {
+                withContext(Dispatchers.Main) {displayToast(response.message)}
+            }
+
+        } catch (e: Exception) {
+            error(e)
+        }
+    }
+
     override suspend fun addList(list: List) = withContext(Dispatchers.IO) {
         try {
             val response = api.saveList(list, authToken)
+            Logger.getLogger(MyServer::class.java.name).log(Level.INFO, "Auth token from add list method: $authToken")
             if (response.success) {
                 listDao.insertList(list)
                 sharedPref.setListTimestamp()
@@ -108,9 +126,9 @@ class MyServer @Inject constructor(
         }
     }
 
-    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getAllLists()
+    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getUserLists(sharedPref.getUser().id)
 
-    override fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>> = noteDao.getAllNotes()
+    override fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>> = noteDao.getListNotes(sharedPref.getListId())
 
     override suspend fun deleteList(list: List) = withContext(Dispatchers.IO) {
         try {

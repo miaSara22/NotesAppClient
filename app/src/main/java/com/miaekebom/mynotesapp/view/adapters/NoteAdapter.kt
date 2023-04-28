@@ -50,4 +50,9 @@ class NoteAdapter(
     override fun getItemCount(): Int {
         return dataList.size
     }
+
+    fun searchItem(result: ArrayList<Note>) {
+        dataList = result
+        notifyDataSetChanged()
+    }
 }

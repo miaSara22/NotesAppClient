@@ -20,23 +20,17 @@
         android:layout_gravity="center">
 
         <Button
-            android:id="@+id/B_image_from_camera"
+            android:id="@+id/B_generate_image"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/take_a_photo"
+            android:text="@string/generate_new_image"
             android:gravity="center"/>
-
-        <Button
-            android:id="@+id/B_image_from_gallery"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/choose_from_gallery"/>
 
         <Button
             android:id="@+id/B_delete_image"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:text="@string/delete_photo"/>
+            android:text="@string/remove_image"/>
 
     </LinearLayout>
 

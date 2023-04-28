@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.miaekebom.mynotesapp.model.IRepository
 import com.miaekebom.mynotesapp.model.data.List
+import com.miaekebom.mynotesapp.model.data.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import okhttp3.ResponseBody
@@ -42,11 +43,12 @@ class MainViewModel @Inject constructor(private val repository: IRepository): Vi
         return repository.getUserLists()
     }
 
-    suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody> {
-        return repository.setUserImage(userId, image)
+    suspend fun updateUserImage(user: User, imagePath: String) {
+        return repository.updateUserImage(user, imagePath)
+
     }
 
-    suspend fun deleteUserImage(userId: Int): Call<ResponseBody> {
-        return repository.deleteUserImage(userId)
+    suspend fun deleteUserImage(user: User) {
+        return repository.deleteUserImage(user)
     }
 }

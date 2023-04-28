@@ -15,9 +15,9 @@ interface IServerManager {
 
     suspend fun addNewUser(user: User)
     suspend fun loginUser(loginRequest: LoginRequest)
-    suspend fun setUserImage(userId: Int, image: String): Call<ResponseBody>
-    suspend fun deleteUserImage(userId: Int): Call<ResponseBody>
     suspend fun deleteUser(user: User)
+    suspend fun updateUserImage(user: User, imagePath: String)
+    suspend fun deleteUserImage(user: User)
 
     suspend fun addNote(note: Note)
     suspend fun deleteNote(note: Note)
@@ -30,4 +30,5 @@ interface IServerManager {
     suspend fun getUserLists(): kotlin.collections.List<List>
     suspend fun addList(list: List)
     fun listenToListsChanges(): LiveData<kotlin.collections.List<List>>
+
 }

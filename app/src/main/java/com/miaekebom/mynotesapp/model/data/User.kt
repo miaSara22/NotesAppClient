@@ -19,6 +19,8 @@ data class User(
     var role: Role,
     @SerializedName("image")
     var image: String?,
+
+    @Ignore
     @SerializedName("pwd")
     var pwd: String,
 

@@ -54,13 +54,21 @@ interface IRetrofitApi {
     @Headers("Content-Type: application/json")
     suspend fun saveUser(@Body user: User, @Header("Authorization") authToken: String? = null): com.miaekebom.mynotesapp.model.data.ResultResponse
 
-    @POST("/setUserImage/{userId}")
-    suspend fun setUserImage(@Path ("userId") userId: Int, @Body image: String): Call<ResponseBody>
+    @PUT("/deleteUserImage/{userId}")
+    @Headers("Content-Type: application/json")
+    suspend fun deleteUserImage(@Path("userId") userId: Int, @Header("Authorization") authToken: String): ResultResponse
 
-    @POST("/deleteUserImage/{userId}")
-    suspend fun deleteUserImage(@Path("userId") userId: Int): Call<ResponseBody>
+    @PUT("/updateUserImage/{userId}")
+    @Headers("Content-Type: application/json")
+    suspend fun updateUserImage(@Path("userId") userId: Int, @Body image: String, @Header("Authorization") authToken: String): ResultResponse
 
-    @POST("/deleteUser")
+    @GET("/getUserImage/{userId}")
+    @Headers("Content-Type: application/json")
+    suspend fun getUserImage(@Path("userId") userId: Int, @Body image: String, @Header("Authorization") authToken: String): ResultResponse
+
+
+
+    @DELETE("/deleteUser")
     @Headers("Content-Type: application/json")
     suspend fun deleteUser(@Body user: User, @Header("Authorization") authToken: String): Response<Unit>
 
