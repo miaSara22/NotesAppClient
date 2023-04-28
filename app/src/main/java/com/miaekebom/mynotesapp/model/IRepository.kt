@@ -15,6 +15,8 @@ interface IRepository {
     suspend fun deleteUser(user: User)
     suspend fun updateUserImage(user: User, imagePath: String)
     suspend fun deleteUserImage(user: User)
+    suspend fun getUserImage(userId: Int): String
+
 
     suspend fun addNote(note: Note)
     suspend fun deleteNote(note: Note)

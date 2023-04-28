@@ -119,17 +119,6 @@ class NotesActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
-            R.id.menu_logout -> {  }
-            R.id.menu_about -> {
-                DialogsManager.displayAboutPage(this)
-            }
-            R.id.menu_delete_account -> {  }
-        }
-        return super.onOptionsItemSelected(item)
-    }
-
     private fun displayToast(text: String){
         Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }

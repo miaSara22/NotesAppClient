@@ -64,11 +64,10 @@ interface IRetrofitApi {
 
     @GET("/getUserImage/{userId}")
     @Headers("Content-Type: application/json")
-    suspend fun getUserImage(@Path("userId") userId: Int, @Body image: String, @Header("Authorization") authToken: String): ResultResponse
+    suspend fun getUserImage(@Path("userId") userId: Int, @Header("Authorization") authToken: String): String
 
 
-
-    @DELETE("/deleteUser")
+    @POST("/deleteUser")
     @Headers("Content-Type: application/json")
     suspend fun deleteUser(@Body user: User, @Header("Authorization") authToken: String): Response<Unit>
 

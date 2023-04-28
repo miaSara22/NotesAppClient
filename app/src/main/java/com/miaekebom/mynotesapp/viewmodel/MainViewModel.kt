@@ -51,4 +51,12 @@ class MainViewModel @Inject constructor(private val repository: IRepository): Vi
     suspend fun deleteUserImage(user: User) {
         return repository.deleteUserImage(user)
     }
+
+    suspend fun getUserImage(userId: Int): String {
+        return repository.getUserImage(userId)
+    }
+
+    suspend fun deleteUser(user: User){
+        return repository.deleteUser(user)
+    }
 }

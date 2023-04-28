@@ -11,7 +11,6 @@ import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.databinding.ActivityMainBinding
-import com.miaekebom.mynotesapp.utils.ImagesManager
 import com.miaekebom.mynotesapp.utils.SharedPref
 import com.miaekebom.mynotesapp.view.DialogsManager.displayAboutPage
 import com.miaekebom.mynotesapp.view.DialogsManager.displayCreateListDialog
@@ -19,6 +18,7 @@ import com.miaekebom.mynotesapp.view.DialogsManager.displayEditListNameDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayImageDialog
 import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
+import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
@@ -32,6 +32,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadedLists: List<com.miaekebom.mynotesapp.model.data.List>
     private lateinit var listAdapter: ListAdapter
     private lateinit var binding: ActivityMainBinding
+    private val sharedPref = SharedPref.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +42,7 @@ class MainActivity : AppCompatActivity() {
         onUserImageClick()
         onAddListClick()
         createRecyclerView()
+        displayUserImageIfExists()
     }
 
     private fun createRecyclerView() {
@@ -71,10 +73,21 @@ class MainActivity : AppCompatActivity() {
         displayEditListNameDialog(this, mainViewModel, it)
     }
 
+    private fun displayUserImageIfExists(){
+        mainViewModel.viewModelScope.launch {
+            val image = mainViewModel.getUserImage(sharedPref.getUser().id)
+            if (image.isNotEmpty()) {
+                Picasso.get().load(image).into(binding.IBUserProfile)
+            } else {
+                return@launch
+            }
+        }
+    }
+
     private fun onUserImageClick() {
         val userProfile = binding.IBUserProfile
         userProfile.setOnClickListener {
-            displayImageDialog(SharedPref.getInstance(this).getUser(),
+            displayImageDialog(sharedPref.getUser(),
                 this,
                 userProfile,
                 mainViewModel)
@@ -120,9 +133,18 @@ class MainActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when(item.itemId){
-            R.id.menu_logout -> { displayToast("Hi from logout") }
-            R.id.menu_about -> { displayAboutPage(this) }
-            R.id.menu_delete_account -> { displayToast("Hi from delete account") }
+            R.id.menu_logout -> {
+                displayRegistrationActivity()
+            }
+            R.id.menu_about -> {
+                displayAboutPage(this)
+            }
+            R.id.menu_delete_account -> {
+                mainViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    mainViewModel.deleteUser(sharedPref.getUser())
+                    withContext(Dispatchers.Main) { displayRegistrationActivity() }
+                }
+            }
         }
         return super.onOptionsItemSelected(item)
     }
@@ -131,6 +153,11 @@ class MainActivity : AppCompatActivity() {
         val intent = Intent(this, NotesActivity::class.java)
         intent.putExtra("listName",listName)
         intent.putExtra("listId", listId)
+        startActivity(intent)
+    }
+
+    private fun displayRegistrationActivity(){
+        val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
     }
 

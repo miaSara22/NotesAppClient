@@ -12,8 +12,6 @@ import com.miaekebom.mynotesapp.view.MainActivity
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import okhttp3.ResponseBody
-import retrofit2.*
 import java.util.logging.Level
 import java.util.logging.Logger
 import javax.inject.Inject
@@ -69,6 +67,7 @@ class MyServer @Inject constructor(
             val response = api.deleteUser(user, authToken)
             if (response.isSuccessful) {
                 userDao.deleteUser(user)
+                listDao.deleteLists(user.id)
                 withContext(Dispatchers.Main) { displayToast(response.message()) }
 
             } else {
@@ -108,13 +107,28 @@ class MyServer @Inject constructor(
         }
     }
 
+    override suspend fun getUserImage(userId: Int): String {
+        return try {
+            withContext(Dispatchers.IO) {
+                val response = api.getUserImage(userId, authToken)
+                if (!response.isNullOrBlank()) {
+                    response
+                } else {
+                    ""
+                }
+            }
+        } catch (e: Exception) {
+            error(e)
+            ""
+        }
+    }
+
     override suspend fun addList(list: List) = withContext(Dispatchers.IO) {
         try {
             val response = api.saveList(list, authToken)
             Logger.getLogger(MyServer::class.java.name).log(Level.INFO, "Auth token from add list method: $authToken")
             if (response.success) {
                 listDao.insertList(list)
-                sharedPref.setListTimestamp()
                 withContext(Dispatchers.Main) {
                     displayToast(response.message)
                 }
@@ -187,7 +201,6 @@ class MyServer @Inject constructor(
 
             if (response.success) {
                 noteDao.insertNote(note)
-                sharedPref.setNoteTimestamp()
                 withContext(Dispatchers.Main) { displayToast(response.message) }
 
             } else {

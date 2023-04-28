@@ -29,7 +29,7 @@ object ImagesManager {
 
                 val apiResponse = response.body()
                 val i = (0..apiResponse!!.imagesList.size).random()
-                val apiImage = apiResponse!!.imagesList[i]
+                val apiImage = apiResponse.imagesList[i]
                 Picasso.get().load(apiImage.imagePath).into(userProfile)
 
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {

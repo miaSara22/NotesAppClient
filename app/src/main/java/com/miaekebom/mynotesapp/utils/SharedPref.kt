@@ -5,13 +5,13 @@ import androidx.appcompat.app.AppCompatActivity
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.model.data.Role
 import com.miaekebom.mynotesapp.model.data.User
+import com.miaekebom.mynotesapp.view.MainActivity
+import kotlinx.coroutines.CoroutineScope
 
 const val fullName = "USER_FULL_NAME"
 const val email = "USER_EMAIL"
 const val id = "USER_ID"
 const val token = "USER_TOKEN"
-const val noteTimestamp = "NOTE_TIMESTAMP"
-const val listTimeStamp = "LIST_TIMESTAMP"
 const val listId = "LIST_ID"
 
 class SharedPref private constructor(context: Context) {
@@ -49,22 +49,6 @@ class SharedPref private constructor(context: Context) {
 
     fun getUserToken(): String {
         return sharePref.getString(token,null).toString() }
-
-    fun setNoteTimestamp() {
-        sharePref.edit()
-            .putLong(noteTimestamp, System.currentTimeMillis())
-            .apply() }
-
-    fun getNoteTimestamp(): Long {
-        return sharePref.getLong(noteTimestamp, -1) }
-
-    fun setListTimestamp() {
-        sharePref.edit()
-            .putLong(listTimeStamp, System.currentTimeMillis())
-            .apply() }
-
-    fun getListTimestamp(): Long {
-        return sharePref.getLong(listTimeStamp, -1) }
 
     fun setListId(id: Int){
         sharePref.edit()

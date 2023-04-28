@@ -2,6 +2,7 @@ package com.miaekebom.mynotesapp.view
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.res.Resources
 import android.view.LayoutInflater
 import android.widget.ImageButton
 import android.widget.Toast
@@ -86,21 +87,20 @@ object DialogsManager {
         dialog.show()
 
         binding.apply {
-            BSaveChanges.setOnClickListener {
 
-                ETNewName.setText(list.title)
-                BSaveChanges.setOnClickListener {
-                    val updatedList = com.miaekebom.mynotesapp.model.data.List(
-                        list.id,
-                        list.ownerId,
-                        ETNewName.text.toString()
-                    )
-                    mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-                        mainViewModel.updateList(updatedList)
-                    }
+            ETNewName.setText(list.title)
+            BSaveChanges.setOnClickListener {
+                val updatedList = com.miaekebom.mynotesapp.model.data.List(
+                    list.id,
+                    list.ownerId,
+                    ETNewName.text.toString()
+                )
+                mainViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    mainViewModel.updateList(updatedList)
                 }
-                BCancelChanges.setOnClickListener { dialog.dismiss() }
             }
+            BCancelChanges.setOnClickListener { dialog.dismiss() }
+
         }
     }
 
@@ -113,17 +113,14 @@ object DialogsManager {
         dialog.show()
 
         binding.apply {
+            ETNewName.setText(note.title)
             BSaveChanges.setOnClickListener {
-
-                ETNewName.setText(note.title)
-                BSaveChanges.setOnClickListener {
-                    val updatedNote = Note(note.id, note.ownerId, ETNewName.text.toString(), note.description)
-                    notesViewModel.viewModelScope.launch(Dispatchers.IO) {
-                        notesViewModel.updateNote(updatedNote)
-                    }
+                val updatedNote = Note(note.id, note.ownerId, ETNewName.text.toString(), note.description)
+                notesViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    notesViewModel.updateNote(updatedNote)
                 }
-                BCancelChanges.setOnClickListener { dialog.dismiss() }
             }
+            BCancelChanges.setOnClickListener { dialog.dismiss() }
         }
     }
 
@@ -177,10 +174,22 @@ object DialogsManager {
             BDeleteImage.setOnClickListener {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
                     mainViewModel.deleteUserImage(user)
-                    withContext(Dispatchers.Main){ userProfile.setImageResource(R.drawable.profile) }
+                    withContext(Dispatchers.Main) {
+                        userProfile.apply {
+                            layoutParams.width = 50.dpToPx()
+                            layoutParams.height = 50.dpToPx()
+                            setPadding(10.dpToPx(), 10.dpToPx(), 0, 0)
+                            setImageResource(R.drawable.profile)
+                        }
+                    }
                 }
             }
         }
+       // dialog.dismiss()
+    }
+
+    private fun Int.dpToPx(): Int {
+        return (this * Resources.getSystem().displayMetrics.density).toInt()
     }
 
     fun displayAboutPage(context: Context) {

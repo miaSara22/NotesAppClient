@@ -35,6 +35,10 @@ class Repository@Inject constructor(
         serverManager.deleteUserImage(user)
     }
 
+    override suspend fun getUserImage(userId: Int): String {
+        return serverManager.getUserImage(userId)
+    }
+
     override suspend fun addNote(note: Note) {
         serverManager.addNote(note)
     }

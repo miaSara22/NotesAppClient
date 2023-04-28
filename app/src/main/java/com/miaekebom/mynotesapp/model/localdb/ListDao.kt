@@ -18,4 +18,7 @@ interface ListDao {
 
     @Query(value = "SELECT * FROM lists WHERE ownerId = :ownerId")
     fun getUserLists(ownerId: Int): LiveData<kotlin.collections.List<List>>
+
+    @Query(value = "DELETE FROM lists WHERE ownerId = :ownerId")
+    fun deleteLists(ownerId: Int)
 }
