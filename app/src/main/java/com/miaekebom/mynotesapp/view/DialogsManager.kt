@@ -2,6 +2,7 @@ package com.miaekebom.mynotesapp.view
 
 import android.app.AlertDialog
 import android.content.Context
+import android.content.Intent
 import android.content.res.Resources
 import android.view.LayoutInflater
 import android.widget.ImageButton
@@ -143,7 +144,30 @@ object DialogsManager {
         }
     }
 
-    fun displayNoteDescDialog(context: Context, notesViewModel: NoteViewModel, noteDesc: String) {
+    fun displayEnsureDialog(context: Context, mainViewModel: MainViewModel, user: User) {
+        val binding = EnsureDialogBinding.inflate(LayoutInflater.from(context))
+        val dialog = AlertDialog.Builder(context)
+            .setView(binding.root)
+            .create()
+        dialog.setCanceledOnTouchOutside(true)
+        dialog.show()
+
+        binding.apply {
+            BDeleteAccount.setOnClickListener {
+                mainViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    mainViewModel.deleteUser(user)
+                    withContext(Dispatchers.Main) {
+                        displayRegistrationActivity(context)
+                    }
+                }
+            }
+            BDoNotDeleteAccount.setOnClickListener {
+                dialog.dismiss()
+            }
+        }
+    }
+
+    fun displayNoteDescDialog(context: Context, noteViewModel: NoteViewModel, note: Note) {
         val binding = OnNoteClickDialogBinding.inflate(LayoutInflater.from(context))
         val dialog = AlertDialog.Builder(context)
             .setView(binding.root)
@@ -152,11 +176,33 @@ object DialogsManager {
         dialog.show()
 
         binding.apply {
-            TVNoteDec.text = noteDesc
-            BNoteDescDelete.setOnClickListener {  }
-            BNoteDescEdit.setOnClickListener {  }
+            ETNoteDec.setText(note.description)
+
+            BNoteDescDelete.setOnClickListener {
+                val updatedNote = Note()
+                updatedNote.description = ""
+                updatedNote.title = note.title
+                updatedNote.ownerId = note.ownerId
+                updatedNote.id = note.id
+                noteViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    noteViewModel.updateNote(updatedNote)
+                }
+            }
+            BNoteDescSave.setOnClickListener {
+                val updatedNote = Note()
+                updatedNote.description = ETNoteDec.text.toString()
+                updatedNote.title = note.title
+                updatedNote.ownerId = note.ownerId
+                updatedNote.id = note.id
+                noteViewModel.viewModelScope.launch(Dispatchers.IO) {
+                    noteViewModel.updateNote(updatedNote)
+                }
+            }
+
+            BNoteDescCancel.setOnClickListener {
+                dialog.dismiss()
+            }
         }
-        dialog.dismiss()
     }
 
     fun displayImageDialog(user: User, context: Context, userProfile: ImageButton, mainViewModel: MainViewModel) {
@@ -169,7 +215,7 @@ object DialogsManager {
 
         binding.apply {
             BGenerateImage.setOnClickListener {
-                ImagesManager.getImageFromApi(user, context, userProfile, mainViewModel)
+                ImagesManager.getImageFromApi(user, userProfile, mainViewModel)
             }
             BDeleteImage.setOnClickListener {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
@@ -185,7 +231,6 @@ object DialogsManager {
                 }
             }
         }
-       // dialog.dismiss()
     }
 
     private fun Int.dpToPx(): Int {
@@ -199,6 +244,11 @@ object DialogsManager {
             .create()
         dialog.setCanceledOnTouchOutside(true)
         dialog.show()
+    }
+
+    private fun displayRegistrationActivity(context: Context){
+        val intent = Intent(context, RegistrationActivity::class.java)
+        context.startActivity(intent)
     }
 
     private fun displayToast(message: String, context: Context) {

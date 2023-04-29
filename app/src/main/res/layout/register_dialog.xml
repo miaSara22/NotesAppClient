@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_email_address"
+        android:maxLength="200"
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:inputType="textEmailAddress"
@@ -24,6 +25,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/enter_full_name"
+        android:maxLength="50"
         android:gravity="center"
         android:layout_marginBottom="10dp"
         android:inputType="text"
@@ -35,6 +37,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/enter_password"
         android:layout_marginBottom="10dp"
+        android:maxLength="50"
         android:gravity="center"
         android:inputType="textPassword"
         android:textStyle="italic"/>
@@ -45,6 +48,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/re_enter_password"
         android:gravity="center"
+        android:maxLength="50"
         android:layout_marginBottom="100dp"
         android:inputType="textPassword"
         android:textStyle="italic"/>

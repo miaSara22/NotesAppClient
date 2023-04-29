@@ -2,12 +2,9 @@ package com.miaekebom.mynotesapp.model
 
 import android.content.Context
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
 import dagger.hilt.android.qualifiers.ApplicationContext
-import okhttp3.ResponseBody
-import retrofit2.Call
 import javax.inject.Inject
 
 class Repository@Inject constructor(

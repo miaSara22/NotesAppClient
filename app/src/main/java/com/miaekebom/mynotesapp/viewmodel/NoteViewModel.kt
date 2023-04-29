@@ -35,10 +35,4 @@ class NoteViewModel @Inject constructor(private val repository: IRepository): Vi
     suspend fun updateNote(note: Note){
         repository.updateNote(note)
     }
-
-    suspend fun getListNotes(): List<Note>{
-        return repository.getListNotes()
-    }
-
-    fun listenToNoteChanges(){}
 }

@@ -67,6 +67,11 @@ class MyServer @Inject constructor(
             val response = api.deleteUser(user, authToken)
             if (response.isSuccessful) {
                 userDao.deleteUser(user)
+
+                val lists: kotlin.collections.List<List> = listDao.getUserLists(user.id)
+                for (list in lists){
+                    noteDao.deleteNotes(list.id)
+                }
                 listDao.deleteLists(user.id)
                 withContext(Dispatchers.Main) { displayToast(response.message()) }
 
@@ -108,6 +113,7 @@ class MyServer @Inject constructor(
     }
 
     override suspend fun getUserImage(userId: Int): String {
+
         return try {
             withContext(Dispatchers.IO) {
                 val response = api.getUserImage(userId, authToken)
@@ -140,7 +146,7 @@ class MyServer @Inject constructor(
         }
     }
 
-    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getUserLists(sharedPref.getUser().id)
+    override fun listenToListsChanges(): LiveData<kotlin.collections.List<List>> = listDao.getUserListsLiveData(sharedPref.getUser().id)
 
     override fun listenToNotesChanges(): LiveData<kotlin.collections.List<Note>> = noteDao.getListNotes(sharedPref.getListId())
 
@@ -230,7 +236,7 @@ class MyServer @Inject constructor(
         try {
             val response = api.updateNote(note, authToken)
             if (response.success) {
-                noteDao.updateNote(note)
+                noteDao.updateNote(note.title, note.description, note.id)
                 withContext(Dispatchers.Main) { displayToast(response.message) }
             } else {
                 withContext(Dispatchers.Main) { displayToast(response.message) }

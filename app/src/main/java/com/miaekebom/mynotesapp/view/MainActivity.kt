@@ -15,6 +15,7 @@ import com.miaekebom.mynotesapp.utils.SharedPref
 import com.miaekebom.mynotesapp.view.DialogsManager.displayAboutPage
 import com.miaekebom.mynotesapp.view.DialogsManager.displayCreateListDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayEditListNameDialog
+import com.miaekebom.mynotesapp.view.DialogsManager.displayEnsureDialog
 import com.miaekebom.mynotesapp.view.DialogsManager.displayImageDialog
 import com.miaekebom.mynotesapp.view.adapters.ListAdapter
 import com.miaekebom.mynotesapp.viewmodel.MainViewModel
@@ -22,7 +23,6 @@ import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 
 @AndroidEntryPoint
@@ -32,7 +32,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var loadedLists: List<com.miaekebom.mynotesapp.model.data.List>
     private lateinit var listAdapter: ListAdapter
     private lateinit var binding: ActivityMainBinding
-    private val sharedPref = SharedPref.getInstance(this)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,7 +74,7 @@ class MainActivity : AppCompatActivity() {
 
     private fun displayUserImageIfExists(){
         mainViewModel.viewModelScope.launch {
-            val image = mainViewModel.getUserImage(sharedPref.getUser().id)
+            val image = mainViewModel.getUserImage(SharedPref.getInstance(this@MainActivity).getUser().id)
             if (image.isNotEmpty()) {
                 Picasso.get().load(image).into(binding.IBUserProfile)
             } else {
@@ -87,7 +86,7 @@ class MainActivity : AppCompatActivity() {
     private fun onUserImageClick() {
         val userProfile = binding.IBUserProfile
         userProfile.setOnClickListener {
-            displayImageDialog(sharedPref.getUser(),
+            displayImageDialog(SharedPref.getInstance(this).getUser(),
                 this,
                 userProfile,
                 mainViewModel)
@@ -102,7 +101,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
+        inflater.inflate(R.menu.menu_main_activity, menu)
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView: androidx.appcompat.widget.SearchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -125,7 +124,7 @@ class MainActivity : AppCompatActivity() {
             }
         }
         if (filteredList.isEmpty()){
-            displayToast("No list found...")
+            Toast.makeText(this, "No list found...", Toast.LENGTH_LONG).show()
         }else{
             listAdapter.searchItem(filteredList)
         }
@@ -140,10 +139,7 @@ class MainActivity : AppCompatActivity() {
                 displayAboutPage(this)
             }
             R.id.menu_delete_account -> {
-                mainViewModel.viewModelScope.launch(Dispatchers.IO) {
-                    mainViewModel.deleteUser(sharedPref.getUser())
-                    withContext(Dispatchers.Main) { displayRegistrationActivity() }
-                }
+                displayEnsureDialog(this, mainViewModel, SharedPref.getInstance(this@MainActivity).getUser())
             }
         }
         return super.onOptionsItemSelected(item)
@@ -159,9 +155,5 @@ class MainActivity : AppCompatActivity() {
     private fun displayRegistrationActivity(){
         val intent = Intent(this, RegistrationActivity::class.java)
         startActivity(intent)
-    }
-
-    private fun displayToast(text: String){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }
 }

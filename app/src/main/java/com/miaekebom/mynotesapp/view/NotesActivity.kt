@@ -71,11 +71,10 @@ class NotesActivity : AppCompatActivity() {
             recyclerView.adapter = noteAdapter
             loadedNotes = notes
         }
-
     }
 
     private fun onNoteTitleClick(): (Note) -> Unit = {
-        displayNoteDescDialog(this, noteViewModel, it.description)
+        displayNoteDescDialog(this, noteViewModel, it)
     }
 
     private fun onNoteRemoveClick(): (Note) -> Unit = {
@@ -90,7 +89,7 @@ class NotesActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(R.menu.menu, menu)
+        inflater.inflate(R.menu.menu_notes_activity, menu)
         val searchItem: MenuItem = menu.findItem(R.id.action_search)
         val searchView: androidx.appcompat.widget.SearchView = searchItem.actionView as androidx.appcompat.widget.SearchView
         searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
@@ -113,13 +112,9 @@ class NotesActivity : AppCompatActivity() {
             }
         }
         if (filteredList.isEmpty()){
-            displayToast("No note found...")
+            Toast.makeText(this, "No note found...", Toast.LENGTH_LONG).show()
         }else{
             noteAdapter.searchItem(filteredList)
         }
-    }
-
-    private fun displayToast(text: String){
-        Toast.makeText(this, text, Toast.LENGTH_LONG).show()
     }
 }

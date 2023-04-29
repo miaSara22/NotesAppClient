@@ -14,8 +14,8 @@ interface NoteDao {
     @Delete
     fun deleteNote(note: Note)
 
-    @Update
-    fun updateNote(note: Note)
+    @Query(value = "UPDATE notes SET title = :noteTitle, description = :noteDesc WHERE id = :noteId")
+    fun updateNote(noteTitle: String, noteDesc: String, noteId: Int)
 
     @Query(value = "SELECT * FROM notes WHERE ownerId = :ownerId")
     fun getListNotes(ownerId: Int): LiveData<kotlin.collections.List<Note>>

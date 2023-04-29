@@ -5,8 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.miaekebom.mynotesapp.R
 import com.miaekebom.mynotesapp.model.data.Role
 import com.miaekebom.mynotesapp.model.data.User
-import com.miaekebom.mynotesapp.view.MainActivity
-import kotlinx.coroutines.CoroutineScope
 
 const val fullName = "USER_FULL_NAME"
 const val email = "USER_EMAIL"

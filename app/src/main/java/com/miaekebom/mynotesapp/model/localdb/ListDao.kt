@@ -7,6 +7,7 @@ import com.miaekebom.mynotesapp.model.data.List
 @Dao
 interface ListDao {
 
+
     @Insert
     fun insertList(list: List)
 
@@ -17,7 +18,10 @@ interface ListDao {
     fun updateList(list: List)
 
     @Query(value = "SELECT * FROM lists WHERE ownerId = :ownerId")
-    fun getUserLists(ownerId: Int): LiveData<kotlin.collections.List<List>>
+    fun getUserListsLiveData(ownerId: Int): LiveData<kotlin.collections.List<List>>
+
+    @Query(value = "SELECT * FROM lists WHERE ownerId = :ownerId")
+    fun getUserLists(ownerId: Int): kotlin.collections.List<List>
 
     @Query(value = "DELETE FROM lists WHERE ownerId = :ownerId")
     fun deleteLists(ownerId: Int)

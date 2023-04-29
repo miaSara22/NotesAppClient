@@ -1,12 +1,8 @@
 package com.miaekebom.mynotesapp.model
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.miaekebom.mynotesapp.model.data.*
 import com.miaekebom.mynotesapp.model.data.List
-import okhttp3.RequestBody
-import okhttp3.ResponseBody
-import retrofit2.Call
 
 interface IRepository {
 

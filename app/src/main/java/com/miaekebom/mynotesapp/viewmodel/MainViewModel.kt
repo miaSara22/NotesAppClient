@@ -9,8 +9,6 @@ import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.data.User
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
-import okhttp3.ResponseBody
-import retrofit2.Call
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,7 +25,7 @@ class MainViewModel @Inject constructor(private val repository: IRepository): Vi
         }
     }
 
-    suspend fun addList(list: com.miaekebom.mynotesapp.model.data.List) {
+    suspend fun addList(list: List) {
         return repository.addList(list)
     }
 
@@ -35,17 +33,12 @@ class MainViewModel @Inject constructor(private val repository: IRepository): Vi
         return repository.deleteList(list)
     }
 
-    suspend fun updateList(list: com.miaekebom.mynotesapp.model.data.List) {
+    suspend fun updateList(list: List) {
         return repository.updateList(list)
-    }
-
-    suspend fun getUserLists(): kotlin.collections.List<List> {
-        return repository.getUserLists()
     }
 
     suspend fun updateUserImage(user: User, imagePath: String) {
         return repository.updateUserImage(user, imagePath)
-
     }
 
     suspend fun deleteUserImage(user: User) {

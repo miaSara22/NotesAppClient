@@ -12,6 +12,7 @@
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/choose_image_dialog.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/custom_progress.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/edit_text_dialog.xml" value="0.25" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/ensure_dialog.xml" value="0.1" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/footer.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/image_dialog.xml" value="0.2617753623188406" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/login_dialog.xml" value="0.27447916666666666" />
@@ -25,6 +26,7 @@
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/row_note_item.xml" value="0.25" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/layout/sign_up_dialog.xml" value="0.165" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/menu/menu.xml" value="0.19791666666666666" />
+        <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/menu/menu_notes_activity.xml" value="0.2755208333333333" />
         <entry key="..\:/Users/miasa/AndroidStudioProjects/MyNotesApp/app/src/main/res/menu/search_menu.xml" value="0.2755208333333333" />
       </map>
     </option>

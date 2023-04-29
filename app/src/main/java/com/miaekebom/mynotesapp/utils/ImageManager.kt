@@ -1,6 +1,5 @@
 package com.miaekebom.mynotesapp.utils
 
-import android.content.Context
 import android.util.Log
 import android.widget.ImageButton
 import androidx.lifecycle.viewModelScope
@@ -18,7 +17,7 @@ import retrofit2.Response
 
 object ImagesManager {
 
-    fun getImageFromApi(user: User, context: Context, userProfile: ImageButton, mainViewModel: MainViewModel) {
+    fun getImageFromApi(user: User, userProfile: ImageButton, mainViewModel: MainViewModel) {
         val retrofit = IPixabayApi.create()
         retrofit.getImages().enqueue(object : Callback<ApiResponseHitsList.ApiResponse> {
 
@@ -28,7 +27,7 @@ object ImagesManager {
             ) {
 
                 val apiResponse = response.body()
-                val i = (0..apiResponse!!.imagesList.size).random()
+                val i = (0 until apiResponse!!.imagesList.size).random()
                 val apiImage = apiResponse.imagesList[i]
                 Picasso.get().load(apiImage.imagePath).into(userProfile)
 

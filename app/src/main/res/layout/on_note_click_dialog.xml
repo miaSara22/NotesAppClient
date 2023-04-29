@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="350dp"
-    android:layout_height="150dp"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_gravity="center"
     android:layout_margin="10dp"
     app:cardCornerRadius="10dp"
@@ -13,13 +13,15 @@
     android:padding="5dp"
     android:id="@+id/LL_note_desc">
 
-        <TextView
-            android:id="@+id/TV_note_dec"
+        <EditText
+            android:id="@+id/ET_note_dec"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="#ffffff"
-            android:text="@string/note_description"
+            tools:text="@string/note_description"
+            android:maxLength="100"
+            android:inputType="text"
             android:textColor="#000000"
+            android:layout_marginTop="10dp"
             android:gravity="center"
             android:textSize="16sp"
             />
@@ -28,15 +30,16 @@
             android:orientation="horizontal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
             android:gravity="center">
 
                 <Button
-                    android:id="@+id/B_note_desc_edit"
+                    android:id="@+id/B_note_desc_save"
                     android:layout_gravity="center"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
-                    android:text="@string/edit"/>
+                    android:text="@string/save"/>
 
                 <Button
                     android:id="@+id/B_note_desc_delete"
@@ -45,6 +48,14 @@
                     android:layout_height="wrap_content"
                     android:layout_margin="10dp"
                     android:text="@string/delete"/>
+
+                <Button
+                    android:id="@+id/B_note_desc_cancel"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:text="@string/cancel"/>
 
         </LinearLayout>
 

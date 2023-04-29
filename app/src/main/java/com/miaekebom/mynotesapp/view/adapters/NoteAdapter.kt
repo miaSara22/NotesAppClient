@@ -4,7 +4,6 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.miaekebom.mynotesapp.databinding.RowNoteItemBinding
-import com.miaekebom.mynotesapp.model.data.List
 import com.miaekebom.mynotesapp.model.data.Note
 
 class NoteAdapter(
