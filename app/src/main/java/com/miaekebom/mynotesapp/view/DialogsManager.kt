@@ -99,11 +99,14 @@ object DialogsManager {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
                     mainViewModel.updateList(updatedList)
                 }
+                dialog.dismiss()
             }
-            BCancelChanges.setOnClickListener { dialog.dismiss() }
-
+            BCancelChanges.setOnClickListener {
+                dialog.dismiss()
+            }
         }
     }
+
 
     fun displayEditNoteNameDialog(context: Context, notesViewModel: NoteViewModel, note: Note) {
         val binding = EditTextDialogBinding.inflate(LayoutInflater.from(context))
@@ -120,10 +123,12 @@ object DialogsManager {
                 notesViewModel.viewModelScope.launch(Dispatchers.IO) {
                     notesViewModel.updateNote(updatedNote)
                 }
+                dialog.dismiss()
             }
             BCancelChanges.setOnClickListener { dialog.dismiss() }
         }
     }
+
 
     fun displayCreateListDialog(context: Context, mainViewModel: MainViewModel) {
         val binding = AddListDialogBinding.inflate(LayoutInflater.from(context))
@@ -157,6 +162,7 @@ object DialogsManager {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
                     mainViewModel.deleteUser(user)
                     withContext(Dispatchers.Main) {
+                        dialog.dismiss()
                         displayRegistrationActivity(context)
                     }
                 }
@@ -166,6 +172,7 @@ object DialogsManager {
             }
         }
     }
+
 
     fun displayNoteDescDialog(context: Context, noteViewModel: NoteViewModel, note: Note) {
         val binding = OnNoteClickDialogBinding.inflate(LayoutInflater.from(context))
@@ -187,6 +194,7 @@ object DialogsManager {
                 noteViewModel.viewModelScope.launch(Dispatchers.IO) {
                     noteViewModel.updateNote(updatedNote)
                 }
+                dialog.dismiss()
             }
             BNoteDescSave.setOnClickListener {
                 val updatedNote = Note()
@@ -197,6 +205,7 @@ object DialogsManager {
                 noteViewModel.viewModelScope.launch(Dispatchers.IO) {
                     noteViewModel.updateNote(updatedNote)
                 }
+                dialog.dismiss()
             }
 
             BNoteDescCancel.setOnClickListener {
@@ -204,6 +213,7 @@ object DialogsManager {
             }
         }
     }
+
 
     fun displayImageDialog(user: User, context: Context, userProfile: ImageButton, mainViewModel: MainViewModel) {
         val binding = ImageDialogBinding.inflate(LayoutInflater.from(context))
@@ -216,6 +226,7 @@ object DialogsManager {
         binding.apply {
             BGenerateImage.setOnClickListener {
                 ImagesManager.getImageFromApi(user, userProfile, mainViewModel)
+                dialog.dismiss()
             }
             BDeleteImage.setOnClickListener {
                 mainViewModel.viewModelScope.launch(Dispatchers.IO) {
@@ -229,6 +240,7 @@ object DialogsManager {
                         }
                     }
                 }
+                dialog.dismiss()
             }
         }
     }
